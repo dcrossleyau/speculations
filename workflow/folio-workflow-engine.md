@@ -234,7 +234,6 @@ For the purposes of this document, we will refer to objects with a simple [URN](
 Since we will need a notion of type, we may well wish to make it more explicit and visible within FOLIO. For example, we could introduce a type registry similar to those in operating systems like Mac OS, allowing users to register their preference of which application to use when viewing objects of a given type: "When I get an object of type `user` I want to use the `@folio/users` app to open it" (i.e. the standard Users application) but "When I get an object of type `item` I want to use Frontside's `@fontside/pretty-users` instead".
 
 
-
 ### Workflow state vs. object state
 
 Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purcahse as "awaiting purchase authorization"? The latter allows us to tie together related operations after the event. Workflow is a great source of audit logging capability, perhaps saving individual services from having to do excessive audit logging.
