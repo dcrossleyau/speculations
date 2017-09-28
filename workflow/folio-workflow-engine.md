@@ -217,7 +217,13 @@ It will be possible to think about this in more detail once we start to sketch t
 
 ### Pass by value or by reference?
 
-Should workflow-step inputs and outputs be objects or references to them? In the former approach, we would be passing, for example, item records around. In the latter, we would be passing only the ID that points to the relevant item in the data store.
+Should the objects are are inputs to and outputs from workflow steps be whole objects, or merely references to them?
+
+In the former approach, we would be passing around, for example, item records with `id`, `title`, `barcode` and `status` fields; and workflow steps would make changes to the in-memory records and pass the changed versions on.
+
+In the latter approach, we would be passing only the ID that points to the relevant item in the data store; and workflow steps would need to fetch the record in order to see data fields, and to write back modifications.
+
+The latter approach is less efficient, in that most steps will need to carry out several HTTP requests. That may not be a fatal objection, though: more important is getting the conceptual model right.
 
 
 ### Notion of object type
