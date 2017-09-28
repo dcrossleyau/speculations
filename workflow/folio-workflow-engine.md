@@ -8,7 +8,7 @@
 * [Example workflows](#example-workflows)
     * [Scenario 1: acquisition of a requested book](#scenario-1-acquisition-of-a-requested-book)
     * [Scenario 2: unboxing a delivery](#scenario-2-unboxing-a-delivery)
-    * [Scenario 3: submitting a thesis](#scenario-3-submitting-a-thesis)
+    * [Scenario 3: submitting a dissertation](#scenario-3-submitting-a-dissertation)
 * [Using data in workflows](#using-data-in-workflows)
 * [Front-end/back-end interaction](#front-endback-end-interaction)
 * [Implementation analogies](#implementation-analogies)
@@ -143,9 +143,27 @@ When a package of books arrives at a library, a file is also supplied that conta
   * Check for holds on the newly added instance. If they exist, notify the patrons that the book is now available. Note that holds may be on either instances or (less often) individual items. Typically the patron doesn't care which item they get, but sometimes they do.
 
 
-### Scenario 3: submitting a thesis
+### Scenario 3: submitting a dissertation
 
-XXX After Viva/Defence:: Receiving dissertation, Goes to cataloguing librarian, clean up abstract, upload to IR. 
+Workflows for dissertation submission vary widely between libraries. Here is one possible flow.
+
+* A student submits her dissertation.
+
+* The submitted dissertation is added to the institutional repository (IR) with status "not yet accepted".
+
+* Examiners evaluate the dissertation. Assuming it is adequate, they arrange and evaluate the student's defence.
+
+* Depending on their verdict, the status of the dissertation in the IR is updated to "accepted", "rejected" or "revisions required".
+
+* If revisions were required, the student submits a revised dissertation.
+
+* The revised version is added to the IR with status "not yet accepted". It now becomes the version that is discovered by default in the IR, but retains history so that the original submitted version can still be obtained.
+
+* The examiners evaluate the revisions. Assuming they are acceptable, the status of the revised manuscript in the IR is updated to "accepted".
+
+* Once the dissertation is accepted (whether with or without revisionms), the cataloguing librarian writes an abstract and it is added to the library catalogue.
+
+Note that this example extends FOLIO workflow's influence outside the library to the institutional repository and even potentially to the disseratation examination process.
 
 
 
