@@ -236,7 +236,11 @@ Since we will need a notion of type, we may well wish to make it more explicit a
 
 ### Workflow state vs. object state
 
-Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purcahse as "awaiting purchase authorization"? The latter allows us to tie together related operations after the event. Workflow is a great source of audit logging capability, perhaps saving individual services from having to do excessive audit logging.
+Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purcahse as "awaiting purchase authorization"?
+
+Suppose the progress of a job is halted on the need for a purchase order to be okayed by someone with sufficient authority. We do not need to assign the responsiblity for doing this to an individual: there may be a whole group of people who can OK the purchase. So it's tempting to imagine we could place some kind of trigger on the purchase record itself to restart the workflow, and so avoid having the workflow instance itself track where it is in its sequence of operations. But making all the other kinds of task workflow-aware may spread the responsibility thinner than we want. Lots more thought required here.
+
+If the workflow instance has its own state, then we can tie together related operations after the event. Workflow can be a useful source of audit capability, perhaps saving individual services from having to do excessive audit logging.
 
 
 ### Data standardisation
