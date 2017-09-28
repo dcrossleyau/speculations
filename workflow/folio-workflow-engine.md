@@ -9,7 +9,7 @@
     * [Scenario 1: acquisition of a requested book](#scenario-1-acquisition-of-a-requested-book)
     * [Scenario 2: unboxing a delivery](#scenario-2-unboxing-a-delivery)
     * [Scenario 3: submitting a dissertation](#scenario-3-submitting-a-dissertation)
-* [Using data in workflows](#using-data-in-workflows)
+* [Use of data in workflows](#use-of-data-in-workflows)
 * [Front-end/back-end interaction](#front-endback-end-interaction)
 * [Implementation analogies](#implementation-analogies)
     * [Finite state machine with transitions](#finite-state-machine-with-transitions)
@@ -167,7 +167,7 @@ Note that this example extends FOLIO workflow's influence outside the library to
 
 
 
-## Using data in workflows
+## Use of data in workflows
 
 XXX Nassib's experience of workflow engines: pain comes in standardising inputs and outputs
 
