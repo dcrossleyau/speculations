@@ -161,7 +161,7 @@ Workflows for dissertation submission vary widely between libraries. Here is one
 
 * The examiners evaluate the revisions. Assuming they are acceptable, the status of the revised manuscript in the IR is updated to "accepted".
 
-* Once the dissertation is accepted (whether with or without revisionms), the cataloguing librarian writes an abstract and it is added to the library catalogue.
+* Once the dissertation is accepted (whether with or without revisions), the cataloguing librarian writes an abstract and it is added to the library catalogue.
 
 Note that this example extends FOLIO workflow's influence outside the library to the institutional repository and even potentially to the disseratation examination process.
 
@@ -169,13 +169,29 @@ Note that this example extends FOLIO workflow's influence outside the library to
 
 ## Use of data in workflows
 
+It will be apparent from the scenarios above that many kinds of data are going to be involved in workflows:
+instances,
+items,
+dissertations,
+locations,
+holds,
+purchase requests,
+purchase orders
+and more. Each of these kinds of object will presumably be represented by its own kind of record within FOLIO, defined by its own schema and stored by its own back-end module. For many of them there will also be a front-end module allowing users to manage them.
+
+This raises several questions:
+
+* Do we want to implicitly pass records from one step in a workflow to the next, analogously to how Unix pipes data between processes? Or do we need to workflows to explicitly name objects and refer to them by name subsequently? The former is terser and more elegant when it works, but the latter is more explicit and expressive. It will be possible to think about this in more detail once we start to sketch the representation of workflows (see below).
+
+* Should workflow-step inputs and outputs be objects or references to them? In the former approach, we would be passing, for example, item records around. In the latter, we would be passing only the ID that points to the relevant item in the data store.
+
+* Whichever of these approaches we adopt, we will need an explicit notion of object type. If we pass only IDs, we will need to know the type of each object so we can look it up in the appropriate back-end service when we need data from it; and even if we pass whole objects, we will still need to know the type so that we can determine what service to use to persist changes. For the purposes of this document, we will refer to objects with a simple [URN](https://en.wikipedia.org/wiki/Uniform_Resource_Name)-like scheme where type-specific IDs look like `item:234` or `instance:543`.
+
+* Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purcahse as "awaiting purchase authorization"? The latter allows us to tie together related operations after the event. Workflow is a great source of audit logging capability, perhaps saving individual services from having to do excessive audit logging.
+
 XXX Nassib's experience of workflow engines: pain comes in standardising inputs and outputs
 
 XXX Should be avoidable here as data will be canonicalised on entering the system.
-
-XXX Should workflow-step inuts and outputs be items (full objects) or IDs (references to them)?
-
-XXX Does a workflow have its own state separate from the state of the objects it deals with? Does it suffice to mark a purchase as "needs authorization", or do we also need to make a workflow instance as "awaiting purchase authorization"? The latter allows us to tie together related operations after the event. Workflow is a great source of audit logging capability - Perhaps saving individual services from having to do excessive audit logging.
 
 
 
@@ -297,4 +313,8 @@ XXX We will want to do all notification using the notification system: "please a
 
 XXX May need to be made explicit, with preferences registered to each type as in the MacOS registry: e.g. "When I get an object of type `user` I want to use the `@someVendor/users` app to open it.
 
+
+&nbsp;
+
+> **XXX NOTE TO SELF**: get David to proof-read this document before releasing.
 
