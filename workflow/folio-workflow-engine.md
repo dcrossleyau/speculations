@@ -242,7 +242,13 @@ If the workflow instance has its own state, then we can tie together related ope
 
 ### Data standardisation
 
-XXX Nassib's experience of workflow engines: pain comes in standardising inputs and outputs. Should be largely avoidable here as data will be canonicalised on entering the system.
+Our experience of information systems is that data-cleaning is invariably a more extensive and costly task than anticipated. Experience of workflow systems in scientific contexts corroborates this impressions: large sections of scientific workflows tend to be concerned with transforming and massaging data -- both on input, to make it amenable to processing, and on output so it is usable to the destination system.
+
+Happily, much of this difficulty should be avoidable in the context of FOLIO, as we will generally be dealing with data that has already been canonicalised on entering the system. So data normalisation should not be something that most workflows need to worry about.
+
+However, importing data from other systems may well be one of the important use-cases for the workflow mechanisms. It is useful that workflow mechanisms provide us with a means to script and customise import.
+
+Since we aim to import data without human intervention, this process would usually be classified as automation; but these processes will be able, if necessary, to delegate to a human to fix problems encountered along the way.
 
 
 
