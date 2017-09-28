@@ -228,7 +228,9 @@ The latter approach is less efficient, in that most steps will need to carry out
 
 ### Notion of object type
 
-Whichever of these approaches we adopt, we will need an explicit notion of object type. If we pass only IDs, we will need to know the type of each object so we can look it up in the appropriate back-end service when we need data from it; and even if we pass whole objects, we will still need to know the type so that we can determine what service to use to persist changes. For the purposes of this document, we will refer to objects with a simple [URN](https://en.wikipedia.org/wiki/Uniform_Resource_Name)-like scheme where type-specific IDs look like `item:234` or `instance:543`.
+Whether we use pass-by-value or pass-by-reference, we will need an explicit notion of object type. If we pass only IDs, we will need to know the type of each object so we can look it up in the appropriate back-end service when we need data from it; and even if we pass whole objects, we will still need to know the type so that we can determine what service to use to persist changes.
+
+For the purposes of this document, we will refer to objects with a simple [URN](https://en.wikipedia.org/wiki/Uniform_Resource_Name)-like scheme where type-specific IDs look like `item:234` or `instance:543`. But that should not be taken to indicate a preference for passing by reference: it's just a notation adopted for convenience.
 
 
 ### Workflow state vs. object state
