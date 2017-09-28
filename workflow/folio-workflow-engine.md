@@ -189,7 +189,30 @@ This raises several issues.
 
 ### Implicit or explicit data-passing?
 
-Do we want to implicitly pass records from one step in a workflow to the next, analogously to how Unix pipes data between processes? Or do we need to workflows to explicitly name objects and refer to them by name subsequently? The former is terser and more elegant when it works, but the latter is more explicit and expressive. It will be possible to think about this in more detail once we start to sketch the representation of workflows (see below).
+Do we want to implicitly pass anonymous records from one step in a workflow to the next, analogously to how Unix pipes data between processes? Or do we need workflows to explicitly name objects and refer to them by name subsequently?
+
+First approach:
+```
+book < getPatronRequest | findSource | obtainBook
+```
+Second approach:
+```
+request = getPatronRequest(book)
+vendor = findSource(request)
+obtainBookFrom(book, vendor)
+```
+
+The former is terser and more elegant when it works, but the latter is more explicit and expressive. It's nice to imagine that we could support the simpler style when it's sufficiently expressive, but also the more explicit style when it's needed.
+
+Is there precendent in existing programming languages for suppoting both styles? The shell itself offers something along these lines, but it is rather inelegant. The second approach would look like:
+```
+getPatronRequest `cat book` > request
+cat request | findSource > vendor
+cat vendor | obtainBookFrom `cat book`
+```
+I would hope we could improve on that.
+
+It will be possible to think about this in more detail once we start to sketch the representation of workflows (see [below](#expressing-workflows)).
 
 
 ### Pass by value or by reference?
