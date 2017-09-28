@@ -139,10 +139,7 @@ When a package of books arrives at a library, a file is also supplied that conta
     * An item-level record must be created.
     * Each item record must be populated with certain fields copied across from the instance record that it pertains to.
 
-  * XXX How do we decide what the shelving location should be? Is that information already included in the data file that comes with the physical books, or do we need to make that decision and add it to the item records? Is the location the same for all books that are items of the same instance? And by "location" here, do we mean shelfmark, call number, or location in the technical sense?
-
-    Peter comments:
-    > Shelving locations will typically be determined by the call number (or shelf mark -- essentially different phrases for the same thing).  The call number specifies a specific ordering of the books on a shelf.  In any case of an academic library I can think of, the first part of the call number specifies the broad subject area.  (For instance, Dewey Decimal _560s_ and Library of Congress _QE_ -- both representing the subject of geology and dinosaurs.)  It is based on that first part that there would be rules for shelving items in one location or another.
+  * Shelving locations (buildings/branches and shelf ranges) will typically be determined by the call number (or shelf mark -- essentially different phrases for the same thing).  Call numbers specify the sort order at a local library, but the call numbers themselves are usually determined by a national library that is looking across the whole of published literature.  The first part of the call number specifies the broad subject area.  (For instance, Dewey Decimal _560s_ and Library of Congress _QE_ -- both representing the subject of geology and dinosaurs.)  The shelving location is based on that first part of the call number; there would be rules for shelving items in one location or another.  
 
   * Check for holds on the newly added instance. If they exist, notify the patrons that the book is now available. Note that holds may be on either instances or (less often) individual items. Typically the patron doesn't care which item they get, but sometimes they do.
 
