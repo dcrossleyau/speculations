@@ -38,7 +38,6 @@
         * [Other](#other)
 * [Error handling](#error-handling)
 * [Appendix: using the notification system](#appendix-using-the-notification-system)
-* [Appendix: object types](#appendix-object-types)
 
 
 
@@ -232,6 +231,9 @@ Whether we use pass-by-value or pass-by-reference, we will need an explicit noti
 
 For the purposes of this document, we will refer to objects with a simple [URN](https://en.wikipedia.org/wiki/Uniform_Resource_Name)-like scheme where type-specific IDs look like `item:234` or `instance:543`. But that should not be taken to indicate a preference for passing by reference: it's just a notation adopted for convenience.
 
+Since we will need a notion of type, we may well wish to make it more explicit and visible within FOLIO. For example, we could introduce a type registry similar to those in operating systems like Mac OS, allowing users to register their preference of which application to use when viewing objects of a given type: "When I get an object of type `user` I want to use the `@folio/users` app to open it" (i.e. the standard Users application) but "When I get an object of type `item` I want to use Frontside's `@fontside/pretty-users` instead".
+
+
 
 ### Workflow state vs. object state
 
@@ -356,11 +358,6 @@ XXX The workflow may have multiple operations on the go at once (e.g. "when thes
 
 XXX We will want to do all notification using the notification system: "please authorize this", "your request has been accepted/rejected", "your job failed", etc. Users will want different kinds of message communicated in different ways, e.g. some by email, some by text-message, some waiting on the system until the next login. So notifications need a "type" drawn from a small controlled vocabulary (as well as other extensions such as sender, date, subject)
 
-
-
-## Appendix: object types
-
-XXX May need to be made explicit, with preferences registered to each type as in the MacOS registry: e.g. "When I get an object of type `user` I want to use the `@someVendor/users` app to open it.
 
 
 &nbsp;
