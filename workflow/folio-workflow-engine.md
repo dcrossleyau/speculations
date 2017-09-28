@@ -10,6 +10,11 @@
     * [Scenario 2: unboxing a delivery](#scenario-2-unboxing-a-delivery)
     * [Scenario 3: submitting a dissertation](#scenario-3-submitting-a-dissertation)
 * [Use of data in workflows](#use-of-data-in-workflows)
+    * [Implicit or explicit data-passing?](#implicit-or-explicit-data-passing)
+    * [Pass by value or by reference?](#pass-by-value-or-by-reference)
+    * [Notion of object type](#notion-of-object-type)
+    * [Workflow state vs. object state](#workflow-state-vs-object-state)
+    * [Data standardisation](#data-standardisation)
 * [Front-end/back-end interaction](#front-endback-end-interaction)
 * [Implementation analogies](#implementation-analogies)
     * [Finite state machine with transitions](#finite-state-machine-with-transitions)
@@ -179,19 +184,32 @@ purchase requests,
 purchase orders
 and more. Each of these kinds of object will presumably be represented by its own kind of record within FOLIO, defined by its own schema and stored by its own back-end module. For many of them there will also be a front-end module allowing users to manage them.
 
-This raises several questions:
+This raises several issues.
 
-* Do we want to implicitly pass records from one step in a workflow to the next, analogously to how Unix pipes data between processes? Or do we need to workflows to explicitly name objects and refer to them by name subsequently? The former is terser and more elegant when it works, but the latter is more explicit and expressive. It will be possible to think about this in more detail once we start to sketch the representation of workflows (see below).
 
-* Should workflow-step inputs and outputs be objects or references to them? In the former approach, we would be passing, for example, item records around. In the latter, we would be passing only the ID that points to the relevant item in the data store.
+### Implicit or explicit data-passing?
 
-* Whichever of these approaches we adopt, we will need an explicit notion of object type. If we pass only IDs, we will need to know the type of each object so we can look it up in the appropriate back-end service when we need data from it; and even if we pass whole objects, we will still need to know the type so that we can determine what service to use to persist changes. For the purposes of this document, we will refer to objects with a simple [URN](https://en.wikipedia.org/wiki/Uniform_Resource_Name)-like scheme where type-specific IDs look like `item:234` or `instance:543`.
+Do we want to implicitly pass records from one step in a workflow to the next, analogously to how Unix pipes data between processes? Or do we need to workflows to explicitly name objects and refer to them by name subsequently? The former is terser and more elegant when it works, but the latter is more explicit and expressive. It will be possible to think about this in more detail once we start to sketch the representation of workflows (see below).
 
-* Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purcahse as "awaiting purchase authorization"? The latter allows us to tie together related operations after the event. Workflow is a great source of audit logging capability, perhaps saving individual services from having to do excessive audit logging.
 
-XXX Nassib's experience of workflow engines: pain comes in standardising inputs and outputs
+### Pass by value or by reference?
 
-XXX Should be avoidable here as data will be canonicalised on entering the system.
+Should workflow-step inputs and outputs be objects or references to them? In the former approach, we would be passing, for example, item records around. In the latter, we would be passing only the ID that points to the relevant item in the data store.
+
+
+### Notion of object type
+
+Whichever of these approaches we adopt, we will need an explicit notion of object type. If we pass only IDs, we will need to know the type of each object so we can look it up in the appropriate back-end service when we need data from it; and even if we pass whole objects, we will still need to know the type so that we can determine what service to use to persist changes. For the purposes of this document, we will refer to objects with a simple [URN](https://en.wikipedia.org/wiki/Uniform_Resource_Name)-like scheme where type-specific IDs look like `item:234` or `instance:543`.
+
+
+### Workflow state vs. object state
+
+Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purcahse as "awaiting purchase authorization"? The latter allows us to tie together related operations after the event. Workflow is a great source of audit logging capability, perhaps saving individual services from having to do excessive audit logging.
+
+
+### Data standardisation
+
+XXX Nassib's experience of workflow engines: pain comes in standardising inputs and outputs. Should be largely avoidable here as data will be canonicalised on entering the system.
 
 
 
