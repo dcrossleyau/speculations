@@ -15,13 +15,13 @@
     * [Notion of object type](#notion-of-object-type)
     * [Workflow state vs. object state](#workflow-state-vs-object-state)
     * [Data standardisation](#data-standardisation)
-* [Front-end/back-end interaction](#front-endback-end-interaction)
 * [Implementation analogies](#implementation-analogies)
     * [Finite state machine with transitions](#finite-state-machine-with-transitions)
     * [Makefile-like dependency tree](#makefile-like-dependency-tree)
     * [Connector Framework](#connector-framework)
     * [Very high-level DSL (like Okapi CLI)](#very-high-level-dsl-like-okapi-cli)
 * [Implementation strategy](#implementation-strategy)
+    * [Front-end/back-end interaction](#front-endback-end-interaction)
     * [Virtual Machine for running workflows](#virtual-machine-for-running-workflows)
     * [Expressing workflows](#expressing-workflows)
         * [XML or JSON](#xml-or-json)
@@ -252,27 +252,54 @@ Since we aim to import data without human intervention, this process would usual
 
 
 
-## Front-end/back-end interaction
-
-XXX Goal is for most or all mechanism to be server-side. That is necessary for it to function in automation. Front-end involvement may be unavoidable in some cases.
-
-XXX Workflow editor as UX'd by Filip is separate.
-
-XXX Much will be done on back-end, though effects will be seen on front-end: e.g. partially pre-filled form that must be completed and submitted.
-
-
-
 ## Implementation analogies
+
+To help guide our thinking as we begin to consider implementation, it's useful to consider some analogies -- none of them perfect, but each potentially shedding some light on the problem we need to solve and how it is best modelled.
 
 
 ### Finite state machine with transitions
 
-XXX
+A workflow can be seen as defining a state machine with a start state, a desired end state, and a set of transitions between states which can result in arriving at the end state.
+
+Considering it in these terms may help us to think more clearly about what kind of state needs to be represented and where it is best maintained. Most fundamental here is the question of how much state we want to centralise within the workflow instance itself, and how much can reside in the affected objects (items, instances, etc).
+
+In practical terms, the entire FOLIO database contains state (as all databases do). This is far too much state to model coherently, and we will be interested in the transitions between possible states of only a small part of this.
 
 
 ### Makefile-like dependency tree
 
-XXX
+In many cases, a workflow will require that some set of two or more tasks are completed before it can proceed to the next step, but the order in which those tasks are completed does not matter: for example, it might require one person to validate the choice of a book to buy while another person clears funds for the purchase:
+```
+        Request received
+             /    \
+            /      \
+           /        \
+          v          v
+Request cleared    Funds acquired
+           \        /
+            \      /
+             \    /
+              v  v
+           Place order
+```
+
+The combination of these requirements cannot be satisfactorily modelled as a sequence of steps, since we do not wish to make one person wait until the other has finishes his part of the job. Such situations may be better expressed by considering each task as separate, and specifying a directed acyclic graph of their dependencies. In the Unix `make` program, it would be specified something like this:
+```
+**target**: placeOrder
+
+placeOrder: requestCleared fundsAcquired
+	doPlaceOrderActions
+
+requestCleared: requestReceived
+	doRequestClearedActions
+
+fundsAcquired: requestReceived
+	doFundsAcquiredActions
+```
+
+(In practice, most implementations of `make` run tasks one at a time, but some implementatiins really do run parallel tasks simulaneously on multi-processor machines.)
+
+If we go some way towards adopting this model, we will face the challenge of integrating `make`-like dependency-graph syntax with the more conventional programming-language syntax used in whatever DSL we come up with.
 
 
 ### Connector Framework
@@ -287,6 +314,15 @@ XXX Domain-specific loop control, e.g. `boxOfBooks.foreach(book) { ... }`.
 
 
 ## Implementation strategy
+
+### Front-end/back-end interaction
+
+XXX Goal is for most or all mechanism to be server-side. That is necessary for it to function in automation. Front-end involvement may be unavoidable in some cases.
+
+XXX Workflow editor as UX'd by Filip is separate.
+
+XXX Much will be done on back-end, though effects will be seen on front-end: e.g. partially pre-filled form that must be completed and submitted.
+
 
 ### Virtual Machine for running workflows
 
