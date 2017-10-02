@@ -55,7 +55,7 @@ Jason Skomorowski,
 and
 Mike Taylor.
 
-At this stage, the contents of this document should be considered as a foundation for discussion, rather than as a design for implementation. The document's purpose is not to guide design, but to provide a mofe concrete vision of what workflow is or could be, so that future discussions have a more secure footing and do not drift away into abstractions.
+At this stage, the contents of this document should be considered as a foundation for discussion, rather than as a design. The document's purpose at this stage is not to guide implementation, but to provide a more concrete vision of what workflow is or could be, so that future discussions have a more secure footing and do not drift away into abstractions.
 
 
 
