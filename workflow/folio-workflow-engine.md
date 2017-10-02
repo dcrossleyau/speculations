@@ -29,14 +29,14 @@
         * [VM](#vm)
         * [Visual](#visual)
         * [Discussion](#discussion)
-    * [Tracking jobs](#tracking-jobs)
     * [Operations](#operations)
         * [Okapi calls](#okapi-calls)
         * [Transformations](#transformations)
         * [Control flow](#control-flow)
         * [Subroutines](#subroutines)
         * [Other](#other)
-* [Error handling](#error-handling)
+    * [Tracking jobs](#tracking-jobs)
+    * [Error handling](#error-handling)
 * [Appendix: using the notification system](#appendix-using-the-notification-system)
 
 
@@ -55,7 +55,8 @@ Jason Skomorowski,
 and
 Mike Taylor.
 
-At this stage, the contents of this document should be considered as a foundation for discussion, rather than as a design for implementation.
+At this stage, the contents of this document should be considered as a foundation for discussion, rather than as a design for implementation. The document's purpose is not to guide design, but to provide a mofe concrete vision of what workflow is or could be, so that future discussions have a more secure footing and do not drift away into abstractions.
+
 
 
 ## Background
@@ -325,8 +326,10 @@ Howeverm a workflow DSL will require control-flow primitives -- and, most likely
 
 
 
-
 ## Implementation strategy
+
+With these analogies in mind, and aware of the three workflow scenarios outlined above, we can now begin to sketch what an implementation might look look. We will look first at the interaction between front-end and back-end components; then consider the need for a virtual machine that can run workflows, before considering different representations -- for humans and computers -- of workflows. We'll then consider some of the operations that we will need to be able to represent and execute, and finally work through what will be required the track the state of an in-progress workflow, and how to handle errors.
+
 
 ### Front-end/back-end interaction
 
@@ -370,11 +373,6 @@ XXX Probably don't need all four representations. Which to omit?
 XXX Programming language: since we will need to parse/render on the client side for the V2 workflow editor, we will need implementations in JS. That suggests we should use those JS implementations on the server side too. This may mean the first Okapi module written in JS, or may entail somehow calling out from an RMB-based module into the JS compiler/renderer.
 
 
-### Tracking jobs
-
-XXX A back-end module for CRUDding the status of jobs based on workflows. Will likely consist of a tree of pointers to job-step objects, each with its own state. Will not need to be transmitted, so no need for a serialised or human-readable form.
-
-
 ### Operations
 
 #### Okapi calls
@@ -398,8 +396,12 @@ XXX Call another named workflow with arguments
 XXX What else?
 
 
+### Tracking jobs
 
-## Error handling
+XXX A back-end module for CRUDding the status of jobs based on workflows. Will likely consist of a tree of pointers to job-step objects, each with its own state. Will not need to be transmitted, so no need for a serialised or human-readable form.
+
+
+### Error handling
 
 XXX If a step fails, do we fail the whole job? We can report back to the person who initiated the job.
 
