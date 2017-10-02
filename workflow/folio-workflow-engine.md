@@ -362,7 +362,8 @@ operations being executed: Okapi requests and suchlike.
 
 ### Expressing workflows
 
-XXX Bizarrely, there may be up to four of these.
+Surprisingly, there could conceivably be as many as four different
+representations of workflows.
 
 #### XML or JSON
 
