@@ -342,7 +342,23 @@ In other cases, front-end/back-end interaction will be simpler and more transito
 
 ### Virtual Machine for running workflows
 
-XXX Somewhat like the CF Engine
+At the heart of the workflow engine will be a virtual machine that can interpret instructions to execute the high-level actions that constutite a job. It will need the ability to load the instructions that make up a workflow using some persistent format (see the next section), and to move through the steps while maintaining an approrpriate notion of the workflow's state, which must be able to persist across long jobs that involve human intervention.
+
+We have at least two candidate approaches for how to implement the Workflow VM. These re:
+
+* Interpreting each operation and executing it directly from an engine.
+
+* Compiling workflow to some existing language and running it within the that language's execution environment, in the presence of a runtime system that provides the necessary APIs for actually executing the steps. For example, we might compile to JVM instructions (or to a JVM language such as Groovy or Java itelf) and run inside a Java Virtual Machine; or compile to JavaScript, and run under the Node interpreter.
+
+While the second approach is superficially appealing in that is seems to give us less work to do, that is largely an illusion: providing the runtime support will be the great bulk of the work. In comparison, creating an interpreter loop that can execute control-flow primitives as well as FOLIO operations will be only a little more work, but give us much more flexibility -- especially in dealing with the thorny difficulty of blocking on steps that require human action that may not be completed for days or weeks.
+
+At least initially, the control gained by executing workflows inside
+our own VM outweighs any possible performace gain from compiling to a
+language with an optimised execution environment. And this is likley
+to remain true, as the overhead of primitives like looping and
+branching is going to be absolutely swamped by the much more expensive
+operations being executed: Okapi requests and suchlike.
+
 
 ### Expressing workflows
 
