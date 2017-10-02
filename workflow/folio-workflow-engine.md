@@ -19,7 +19,7 @@
     * [Finite state machine with transitions](#finite-state-machine-with-transitions)
     * [Makefile-like dependency tree](#makefile-like-dependency-tree)
     * [Connector Framework](#connector-framework)
-    * [Very high-level DSL (like Okapi CLI)](#very-high-level-dsl-like-okapi-cli)
+    * [Very high-level DSL](#very-high-level-dsl)
 * [Implementation strategy](#implementation-strategy)
     * [Front-end/back-end interaction](#front-endback-end-interaction)
     * [Virtual Machine for running workflows](#virtual-machine-for-running-workflows)
@@ -91,7 +91,7 @@ We need to think about this now, rather then deferring until after the v1 releas
 
 ## Review of existing workflow systems
 
-XXX Nassib volunteered to do this: no issue filed yet AFAIK.
+Nassib has volunteered to do this: see [INTFOLIO-6](https://jira.indexdata.com/browse/INTFOLIO-6).
 
 
 
@@ -304,12 +304,25 @@ If we go some way towards adopting this model, we will face the challenge of int
 
 ### Connector Framework
 
-XXX
+The FOLIO workflow system has several points in common with the Connector Framework, and experience gained on that project may be valuable here.
+
+* Workflows, like connectors, are composed of functional steps that perform high-level, domain-specific operations. ("Navigate to URL", "Fill form field", "Parse HTML", etc. in the Connector Framework; "Create item record", "Obtain human confirmation", "Place purchase order", etc. in FOLIO workflow).
+
+* Workflows, like connectors, will need a persistent representation -- possibly several (see [below](#expressing-workflows)).
+
+* FOLIO workflow, like the Connector Framework, will need a powerful and general "Transform" step to handle data-cleaning.
+
+* The separation between CF Engine and the CF Builder mirrors that between the workflow engine (which we probably need for v1) and the workflow editor (which is not for v1).
 
 
-### Very high-level DSL (like Okapi CLI)
+### Very high-level DSL
 
-XXX Domain-specific loop control, e.g. `boxOfBooks.foreach(book) { ... }`.
+Another way to think of workflows is as programs written in a very high-level domain-specific language (DSL). In this language, fundamental operations are not on integers and strings, but on high-level objects such as items, loans and invoices. Many operations will be implemented in whole or in part by CRUD reqeusts against Okpai.
+
+In these respects, such a DSL will resemble commands in the forthcoming Okapi CLI ([OKAPI-425](https://issues.folio.org/browse/OKAPI-425)).
+
+Howeverm a workflow DSL will require control-flow primitives -- and, most likely, domain-specific primitives such as the ability to iterate over all books in a delivery, or all items related to an intance. See [below](#control-flow).
+
 
 
 
