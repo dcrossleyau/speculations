@@ -438,9 +438,9 @@ Or maybe something more more explicit along the lines of
 ```js
 record = fetch(`/items/${id}`)
 // Make whatever changes we wish
-store('/items/${id}`, record)
+store(`/items/${id}`, record)
 // Oh, we changed our mind
-delete('/items/${id}`)
+delete(`/items/${id}`)
 ```
 (Or of course could implement the former in terms of the latter)
 
