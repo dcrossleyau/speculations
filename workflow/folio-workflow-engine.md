@@ -195,7 +195,7 @@ First approach:
 book < getPatronRequest | findSource | obtainBook
 ```
 Second approach:
-```
+```js
 request = getPatronRequest(book)
 vendor = findSource(request)
 obtainBookFrom(book, vendor)
@@ -465,10 +465,41 @@ append oldReturnDates, returnDate
 assign returnDate = $1
 ```
 
-
 #### Control flow
 
-XXX if/then/else, while, foreach, do-in-parallel
+Like any sufficiently expressive language, the Workflow language will need primitives to control the flow of execution.
+
+In the Connector Framework, we tried initially to sidestep this requirement by providing the "simpler" alternative of alternative steps; this proved insufficiently expressive, and the Skip-If step had to be introduced, leaving us with an unsatisfactory situation that has neither the simplicity we desired or the expressiveness we might prefer. For this new VM, it's better to face to problem of control-flow head on, and design it in from the start.
+
+We will of course need the standard set of primitive:
+* `if` / `then` / `else`
+* `while`
+* Maybe `do` ... `while`
+
+And perhaps some domain-specific iterators:
+* `foreach` item related to an instance
+* `foreach` loan held by a patron
+* `foreach` patron in a group
+
+It's not yet clear how these would best be expressed, and whether they would need the schema-aware type system hinted at [above](#data-types).
+
+More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#makefile-like-dependency-tree) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days, so parallelising is indispensible to avoid long delays.
+
+How might such a control-flow be most cleanly expressed? Perhaps something like a `doall` keyword which governs a comma-separated list of statements?
+```js
+doall
+  authorizeChoice(),
+  clearFunds()
+```
+
+Or, with braces for clarity:
+```js
+doall {
+  authorizeChoice(),
+}, {
+  clearFunds()
+}
+```
 
 #### Subroutines
 
