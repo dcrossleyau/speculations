@@ -401,9 +401,11 @@ What language should we write the DSL parser in? (Or, if we decide to make an XM
 
 ### Operations
 
+We now consider some of the operations that will need to be supported by the Workflow Engine. These will most likely be represented by nodes in a parse tree or equivalent.
+
 #### Okapi calls
 
-XXX CRUDding objects
+Most fundamentally, we will need operations for CRUDding various kinds of objects: items, instances, loans, etc. A workflow for renewing a loan will consist primarily of fetching the loan (HTTP GET), modifying its due-date, and rewriting it (HTTP PUT). So we will want a very efficient, readable way of specifying such operations.
 
 #### Transformations
 
