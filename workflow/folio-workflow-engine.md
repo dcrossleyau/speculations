@@ -543,5 +543,5 @@ XXX We will want to do all notification using the notification system: "please a
 
 > **XXX NOTE TO SELF**: consider Charlotte's use-cases: https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637
 
-**XXX NOTE TO SELF**: consider Filip's presentation of workflow editor UX: https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041
+> **XXX NOTE TO SELF**: consider Filip's presentation of workflow editor UX: https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041
 
