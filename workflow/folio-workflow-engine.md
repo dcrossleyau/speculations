@@ -412,7 +412,23 @@ We now consider some of the operations that will need to be supported by the Wor
 
 #### Okapi calls
 
-Most fundamentally, we will need operations for CRUDding various kinds of objects: items, instances, loans, etc. A workflow for renewing a loan will consist primarily of fetching the loan (HTTP GET), modifying its due-date, and rewriting it (HTTP PUT). So we will want a very efficient, readable way of specifying such operations.
+Most fundamentally, we will need operations for CRUDding various kinds of objects: items, instances, loans, etc. A workflow for renewing a loan will consist primarily of fetching the loan (HTTP GET), modifying its due-date, and rewriting it (HTTP PUT). So we will want a very efficient, readable way of specifying such operations. Perhaps something like:
+```js
+record = fetchItem(id)
+// Make whatever changes we wish
+storeItem(id, record)
+// Oh, we changed our mind
+deleteItem(id)
+```
+Or maybe something more more explicit along the lines of
+```js
+record = fetch(`/items/${id}`)
+// Make whatever changes we wish
+store('/items/${id}`, record)
+// Oh, we changed our mind
+delete('/items/${id}`)
+```
+(Or of course could implement the former in terms of the latter)
 
 #### Record manipulation
 
