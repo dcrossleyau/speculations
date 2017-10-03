@@ -403,7 +403,21 @@ What language should we write the DSL parser in? (Or, if we decide to make an XM
 
 ### Data types
 
-XXX string, record, date
+The workflow VM will need to represent, and provide operations on, several data-types. These include the obvious primitives:
+* `integer`
+* `boolean`
+* `string`
+
+And of course structured types:
+* `array`
+* `hash` (a mapping of key-names to values)
+
+But also possibly domain-specific types:
+* `item`
+* `instance`
+* `loan`
+
+It is an open question whether we need to reify domain-dependent concepts such as items and instances, or whether it will suffice to blindly operate on named fields. If we do add type-specific operatoins, where would they be defined? If the Engine is made schema-aware, and is able to read the necessary JSON Schema files (where from?), what additional capabilities would that facilitate?
 
 
 ### Operations
@@ -440,8 +454,6 @@ Manipulation of records will be the other major part of most workflows. These ch
 
 It seems clear that the model will need to recognise subfields from the outset, and that we may need to handle both structured and list fields (analogous to JSON objects and arrays).
 
-It is not yet clear whether the Workflow Engine will need to be schema-aware, or whether it will suffice to blindly operate on named fields.
-
 Transformations of fields will need to be supported: at minimum, the ability to copy one field, transformed by regular-expression substitution, either to another field or back to itself. For example, we may need a workflow step to normalise names from "Brian W. Kerninghan" form to "Kerninghan, Brian W." form:
 ```
 assign author = author: /(.*) (.*)/ to "\2, \1"
@@ -449,7 +461,7 @@ assign author = author: /(.*) (.*)/ to "\2, \1"
 
 Or to reset a loan date while remembering the old one:
 ```
-append oldReturnDates = returnDate
+append oldReturnDates, returnDate
 assign returnDate = $1
 ```
 
