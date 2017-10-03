@@ -34,6 +34,7 @@
         * [Transformations](#transformations)
         * [Control flow](#control-flow)
         * [Subroutines](#subroutines)
+        * [Human interaction](#human-interaction)
         * [Other](#other)
     * [Tracking jobs](#tracking-jobs)
     * [Error handling](#error-handling)
@@ -418,6 +419,10 @@ XXX if/then/else, while, foreach, do-in-parallel
 #### Subroutines
 
 XXX Call another named workflow with arguments
+
+#### Human interaction
+
+XXX Hardest part
 
 #### Other
 
