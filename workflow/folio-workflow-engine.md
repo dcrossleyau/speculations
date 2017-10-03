@@ -29,6 +29,7 @@
         * [Compiled form](#compiled-form)
         * [Visual representation](#visual-representation)
         * [Discussion](#discussion)
+    * [Data types](#data-types)
     * [Operations](#operations)
         * [Okapi calls](#okapi-calls)
         * [Record manipulation](#record-manipulation)
@@ -398,6 +399,11 @@ But that still leaves is with two forms: XML/JSON and the DSL. In one conception
 So it seems possible that we have no pressing need for an XML/JSON form.
 
 What language should we write the DSL parser in? (Or, if we decide to make an XML/JSON representation canonical, the parser that translates raw parse trees into an executable form?) In a future version of FOLIO, we will need to parse and render this language on the client side for the Workflow Editor, so we will need an implementation of the parser/renderer in JavaScript. That suggests we should create those JaveScript implementations for version 1, using them on the server side initially, and avoid later having two separate implementation in different languages. This may mean that the workflow compiler becomes the first Okapi module written in JavaScript; or it may entail somehow calling out from an RMB-based module into a separate JavaScript compiler/renderer.
+
+
+### Data types
+
+XXX string, record, date
 
 
 ### Operations
