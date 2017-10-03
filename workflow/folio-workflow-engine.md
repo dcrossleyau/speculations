@@ -71,7 +71,7 @@ Although "workflow" has been thought of as a FOLIO v2 feature, we need to think 
 
 But well before this is required, FOLIO will need the underlying mechanisms for executing workflows. Until we have the visual editor, we can make do with hand-authored workflows: creating such workflows will be part of the job of developing high-level applications.
 
-We need to think about this now, rather then deferring until after the v1 release, because otherwise we will need to waste a lot of re-engineering down the line: replacing what in effect will be hardwired workflows with applications of the workflow engine. Want to avoid wasting development effort on hardwired workflows that we are only going to throw away.
+We need to think about this now, rather then deferring until after the v1 release, because otherwise we will need to waste a lot of re-engineering down the line: replacing what in effect will be hardwired workflows with applications of the Workflow Engine. Want to avoid wasting development effort on hardwired workflows that we are only going to throw away.
 
 
 ### Terminology
@@ -84,7 +84,7 @@ We need to think about this now, rather then deferring until after the v1 releas
 
 * The _Workflow Editor_ is the visual editor for creating workflows, which will be created as part of FOLIO v2.
 
-* The _workflow engine_ is the software that executes workflows on behalf of a user. It will exist quite separately from the Workflow Editor, which is only one way of authoring a workflow.
+* The _Workflow Engine_ is the software that executes workflows on behalf of a user. It will exist quite separately from the Workflow Editor, which is only one way of authoring a workflow.
 
 * A _workflow language_ is a textual representation of a workflow, which can be authored by a developer. See [below](#expressing-workflows). Since this will be a domain-specific language (DSL) this may also be referred to as a _workflow DSL_.
 
@@ -98,7 +98,7 @@ Nassib has volunteered to do this: see [INTFOLIO-6](https://jira.indexdata.com/b
 
 ## Example workflows
 
-To ensure that FOLIO's workflow capabilities are sufficiently expressive to execute real library workflows, we need to establish some concrete scenarios. We will then be able to express these in a workflow language and consider how a workflow engine could execute them.
+To ensure that FOLIO's workflow capabilities are sufficiently expressive to execute real library workflows, we need to establish some concrete scenarios. We will then be able to express these in a workflow language and consider how a Workflow Engine could execute them.
 
 Here are three scenarios.
 
@@ -314,7 +314,7 @@ Connector Framework (CF), and experience gained on that project may be valuable 
 
 * FOLIO workflow, like the Connector Framework, will need a powerful and general "Transform" step to handle data-cleaning.
 
-* The separation between CF Engine and the CF Builder mirrors that between the workflow engine (which we probably need for v1) and the Workflow Editor (which is not for v1).
+* The separation between CF Engine and the CF Builder mirrors that between the Workflow Engine (which we probably need for v1) and the Workflow Editor (which is not for v1).
 
 
 ### Very high-level DSL
@@ -343,7 +343,7 @@ In other cases, front-end/back-end interaction will be simpler and more transito
 
 ### Virtual Machine for running workflows
 
-At the heart of the workflow engine will be a virtual machine that can interpret instructions to execute the high-level actions that constutite a job. It will need the ability to load the instructions that make up a workflow using some persistent format (see the next section), and to move through the steps while maintaining an approrpriate notion of the workflow's state, which must be able to persist across long jobs that involve human intervention.
+At the heart of the Workflow Engine will be a virtual machine that can interpret instructions to execute the high-level actions that constutite a job. It will need the ability to load the instructions that make up a workflow using some persistent format (see the next section), and to move through the steps while maintaining an approrpriate notion of the workflow's state, which must be able to persist across long jobs that involve human intervention.
 
 We have at least two candidate approaches for how to implement the Workflow VM. These re:
 
@@ -388,11 +388,15 @@ The fourth and final form of workflows is the visual representation that will ap
 
 #### Discussion
 
-XXX Probably don't need all four representations. Which to omit?
+Four representations of workflows certainly feels like too many. For the moment. we can simplify matters by ignoring the visual representation, which certainly will not be in v1, but certainly will need to appear in a subsequent version. Of the other three representations, how many do we need?
 
-XXX Since the DSL will be parseable, maybe we'll make it the persistent form and not bother with XML/JSON at all.
+We can certainly do without the compiled form, at least in early versions of the workflow implementation. This is purely an optimisation, to reduce parsing overhead, and can be ignored until and unless profiling shows that it is needed.
 
-XXX Programming language: since we will need to parse/render on the client side for the V2 Workflow Editor, we will need implementations in JS. That suggests we should use those JS implementations on the server side too. This may mean the first Okapi module written in JS, or may entail somehow calling out from an RMB-based module into the JS compiler/renderer.
+But that still leaves is with two forms: XML/JSON and the DSL. In one conception, the latter exists as a human-maintainable form to compiler into the former. But in that case, do we even need the XML/JSON version? Instead, the DSL could itself be the canonical form: workflows will be written by developers, using the DSL; they will be stored in the FOLIO database in that form; then they compiled and run directly from the parse tree by the Workflow Engine. Later on after v1, these workflows will be compiled and translated into visual form by the Workflow Editor, which will then emit updated workflows in the same DSL, and write them back to the database.
+
+So it seems possible that we have no pressing need for an XML/JSON form.
+
+What language should we write the DSL parser in? (Or, if we decide to make an XML/JSON representation canonical, the parser that translates raw parse trees into an executable form?) In a future version of FOLIO, we will need to parse and render this language on the client side for the Workflow Editor, so we will need an implementation of the parser/renderer in JavaScript. That suggests we should create those JaveScript implementations for version 1, using them on the server side initially, and avoid later having two separate implementation in different languages. This may mean that the workflow compiler becomes the first Okapi module written in JavaScript; or it may entail somehow calling out from an RMB-based module into a separate JavaScript compiler/renderer.
 
 
 ### Operations
