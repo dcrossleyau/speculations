@@ -503,7 +503,9 @@ doall {
 
 #### Subroutines
 
-XXX Call another named workflow with arguments
+In many cases, one workflow will need to invoke another. This is equivalent to a subroutine call. In fact, we can think of individual workflows as simply being subroutines -- and the ones that we invoke from the UI as being like main functions.
+
+Note that this requirement makes explicit the notion that workflows must take arguments. When invoking workflows from the UI -- as, for example, a "make new item for this instance" workflow -- some of the parameters will be determined by the context: for example, "this instance" would be the be that the user is viewing when invoking the workflow. In other contexts, some or all of the arguments will need to be explicitly specified.
 
 #### Human interaction
 
