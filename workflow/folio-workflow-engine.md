@@ -26,7 +26,7 @@
     * [Expressing workflows](#expressing-workflows)
         * [XML or JSON](#xml-or-json)
         * [Human-readable/writeable DSL](#human-readablewriteable-dsl)
-        * [VM](#vm)
+        * [Compiled form](#compiled-form)
         * [Visual](#visual)
         * [Discussion](#discussion)
     * [Operations](#operations)
@@ -378,9 +378,9 @@ This is not a problem in the CF, because we have the CF Builder to create these 
 
 It's likely that we will find ourselves sketching workflows in a high-level pseudocode in any case. So going ahead and creating an interpreter that can run those workflows directly (or compile them into a form that can be run) seems like an obvious step.
 
-#### VM
+#### Compiled form
 
-XXX XML/JSON or DSL will be compiled to some representation that can be executed by the Workflow VM. We may store the compiled version (analogous to Java `.class` files), or maybe just compile and run from the internal representation as Perl and Python do.
+When a workflow is loaded into the engine -- whether from an XML/JSON format file, or a DSL -- the result will be an in-memory representation, most likely a tree, that can be directly executed. We may find it useful to eliminate the overhead of parsing and compiling by storing the compiled version in a binary format that can be loaded very quickly -- analogous to Java's `.class` files. Or perhaps the potential efficiency gain will be little enough that we benefit more from simplicity of just compiling every time and running directly from the internal representation, as Perl, Python and JavaScript do.
 
 #### Visual
 
