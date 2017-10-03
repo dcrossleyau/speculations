@@ -67,7 +67,7 @@ What mean here by "workflow" is that facility of a FOLIO system to guide human u
 
 Workflow in FOLIO is more important than in other library systems, because FOLIO is composed of numerous small applications which interact. Workflow (including automation) will be the glue that binds them together into a powerful, flexible, configurable whole. Rather than a single monolithic Acquisitions application with tightly bound procedures built into it, we envisage smaller, substitutable applications such as Ordering, Invoicing and Unboxing, each of them operated primarily in terms of higher-level procedures defined as workflows.
 
-Although "workflow" has been thought of as a FOLIO v2 feature, we need to think about this now, because the term has been used in two quite separate senses. The v2 feature is the visual workflow editor that has been [prototyped by Filip Jakobsen](http://ux.folio.org/prototype/en/workflows?view=full) and which will allow librarians to set up their own workflows. (For more on a UX-oriented perspective: see [the "Workflow app" issue in the UX Jira project](https://issues.folio.org/browse/UX-52).)
+Although "workflow" has been thought of as a FOLIO v2 feature, we need to think about this now, because the term has been used in two quite separate senses. The v2 feature is the visual Workflow Editor that has been [prototyped by Filip Jakobsen](http://ux.folio.org/prototype/en/workflows?view=full) and which will allow librarians to set up their own workflows. (For more on a UX-oriented perspective: see [the "Workflow app" issue in the UX Jira project](https://issues.folio.org/browse/UX-52).)
 
 But well before this is required, FOLIO will need the underlying mechanisms for executing workflows. Until we have the visual editor, we can make do with hand-authored workflows: creating such workflows will be part of the job of developing high-level applications.
 
@@ -82,9 +82,9 @@ We need to think about this now, rather then deferring until after the v1 releas
 
 * A _job_ is a simpler term for a workflow instance.
 
-* The _workflow editor_ is the visual editor for creating workflows, which will be created as part of FOLIO v2.
+* The _Workflow Editor_ is the visual editor for creating workflows, which will be created as part of FOLIO v2.
 
-* The _workflow engine_ is the software that executes workflows on behalf of a user. It will exist quite separately from the workflow editor, which is only one way of authoring a workflow.
+* The _workflow engine_ is the software that executes workflows on behalf of a user. It will exist quite separately from the Workflow Editor, which is only one way of authoring a workflow.
 
 * A _workflow language_ is a textual representation of a workflow, which can be authored by a developer. See [below](#expressing-workflows). Since this will be a domain-specific language (DSL) this may also be referred to as a _workflow DSL_.
 
@@ -305,7 +305,8 @@ If we go some way towards adopting this model, we will face the challenge of int
 
 ### Connector Framework
 
-The FOLIO workflow system has several points in common with the Connector Framework, and experience gained on that project may be valuable here.
+The FOLIO workflow system has several points in common with the
+Connector Framework (CF), and experience gained on that project may be valuable here.
 
 * Workflows, like connectors, are composed of functional steps that perform high-level, domain-specific operations. ("Navigate to URL", "Fill form field", "Parse HTML", etc. in the Connector Framework; "Create item record", "Obtain human confirmation", "Place purchase order", etc. in FOLIO workflow).
 
@@ -313,7 +314,7 @@ The FOLIO workflow system has several points in common with the Connector Framew
 
 * FOLIO workflow, like the Connector Framework, will need a powerful and general "Transform" step to handle data-cleaning.
 
-* The separation between CF Engine and the CF Builder mirrors that between the workflow engine (which we probably need for v1) and the workflow editor (which is not for v1).
+* The separation between CF Engine and the CF Builder mirrors that between the workflow engine (which we probably need for v1) and the Workflow Editor (which is not for v1).
 
 
 ### Very high-level DSL
@@ -333,7 +334,7 @@ With these analogies in mind, and aware of the three workflow scenarios outlined
 
 ### Front-end/back-end interaction
 
-Leaving aside the v2 workflow editor, which is outside the scope of this document, we expect that most or all of the workflow implementation will be on the back-end. In fact, this is necessary for it to function in automation: we cannot have background tasks stop executing when the user's browser is closed. So while workflows will often be invoked from the front-end, the effects must run mostly on the back-end. (Some workflows will also be started from the back-end: for example, scheduled jobs.)
+Leaving aside the v2 Workflow Editor, which is outside the scope of this document, we expect that most or all of the workflow implementation will be on the back-end. In fact, this is necessary for it to function in automation: we cannot have background tasks stop executing when the user's browser is closed. So while workflows will often be invoked from the front-end, the effects must run mostly on the back-end. (Some workflows will also be started from the back-end: for example, scheduled jobs.)
 
 In some cases, front-end involvement will of course be necessary: for example, when a librarian is required to OK a purchase. Much of the design work in the Workflow system pertains to how this can be done. The most promising approach seems to be using the FOLIO notification system to inform individuals when a task await their input. Then we can make it possible for individuals to configure how that system treats various kinds of notifications: for example, low-priority tasks may simply be queued within FOLIO, to be picked up when the user finds it convenient; higher-priority tasks can be emailed out to solicit a more rapid response; and top-priority tasks might even interrupt a user who is working elsewhere within FOLIO. (As always, our goal here is to provide mechanism, not dictate policy.)
 
@@ -367,13 +368,15 @@ representations of workflows.
 
 #### XML or JSON
 
-XXX Probably the persistent form that is stored in the FOLIO DB, exported and imported, etc.
+We will likely (but not necessarily -- see [discussion](#discussion) below) have a representation of workflows that is simple for machines to parse, and which is stored in the FOLIO database as the canonical representation of workflows. This format is analogous to the XML representation of connectors in the CF, although we might conceivably pick a different metaformat in 2017: JSON is a contender.
 
 #### Human-readable/writeable DSL
 
-XXX May be needed before we have Visual editor, unless we want to hand-write XML or JSON
+XML and JSON are difficult for humans to write: consider, for example, a typical CF connector such [the PLOS ONE connector](http://cfrepo.indexdata.com/repo.pl/allcon/PLoS_ONE.10.cf). This is for a relatively well-behaved site, yet it comes to more than 700 lines of XML, much of it difficult to follow even for those already familiar with CF concepts.
 
-XXX Since this will be parseable, maybe we'll make it the persistent form and not bother with XML/JSON at all.
+This is not a problem in the CF, because we have the CF Builder to create these for us. However, the analogous Workflow Editor is a very substantial piece of work, which we will not even begin to work on until after the v1 release. Until then, we will need a reasonable way of authoring workflows. A high-level domain-specific language is the obvious way to do this: it will not enable regular librarians to author workflows, but will make it easy for developers to do so.
+
+It's likely that we will find ourselves sketching workflows in a high-level pseudocode in any case. So going ahead and creating an interpreter that can run those workflows directly (or compile them into a form that can be run) seems like an obvious step.
 
 #### VM
 
@@ -381,13 +384,15 @@ XXX XML/JSON or DSL will be compiled to some representation that can be executed
 
 #### Visual
 
-XXX In v2, Filip's UK will guide us into a visual representation of workflows. The Workflow editor UI module will need to parse stores workflows (from XML/JSON or a DSL) to determine what to draw; and render edited drawings into a form to send back to the server.
+XXX In v2, Filip's UK will guide us into a visual representation of workflows. The Workflow Editor UI module will need to parse stores workflows (from XML/JSON or a DSL) to determine what to draw; and render edited drawings into a form to send back to the server.
 
 #### Discussion
 
 XXX Probably don't need all four representations. Which to omit?
 
-XXX Programming language: since we will need to parse/render on the client side for the V2 workflow editor, we will need implementations in JS. That suggests we should use those JS implementations on the server side too. This may mean the first Okapi module written in JS, or may entail somehow calling out from an RMB-based module into the JS compiler/renderer.
+XXX Since the DSL will be parseable, maybe we'll make it the persistent form and not bother with XML/JSON at all.
+
+XXX Programming language: since we will need to parse/render on the client side for the V2 Workflow Editor, we will need implementations in JS. That suggests we should use those JS implementations on the server side too. This may mean the first Okapi module written in JS, or may entail somehow calling out from an RMB-based module into the JS compiler/renderer.
 
 
 ### Operations
