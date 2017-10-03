@@ -437,6 +437,8 @@ XXX In the unboxing example: "here’s a report of the three things we weren’t
 
 XXX The workflow may have multiple operations on the go at once (e.g. "when these three parallel tasks are complete, go on to Step X). How do we handle recovert if one of them fails after others have already succeeded?
 
+XXX Heikki writes: There can be various levels of errors, some failing the whole job, some reporting back the three items that failed, etc. It all just needs to be configurable, maybe even on the level that a job could have an error list, and every step could have some checkboxes on how to handle things going wrong. Bit like we did in CF.
+
 
 
 ## Appendix: using the notification system
