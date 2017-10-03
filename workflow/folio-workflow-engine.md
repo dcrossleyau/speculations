@@ -31,7 +31,7 @@
         * [Discussion](#discussion)
     * [Operations](#operations)
         * [Okapi calls](#okapi-calls)
-        * [Transformations](#transformations)
+        * [Record manipulation](#record-manipulation)
         * [Control flow](#control-flow)
         * [Subroutines](#subroutines)
         * [Human interaction](#human-interaction)
@@ -408,9 +408,29 @@ We now consider some of the operations that will need to be supported by the Wor
 
 Most fundamentally, we will need operations for CRUDding various kinds of objects: items, instances, loans, etc. A workflow for renewing a loan will consist primarily of fetching the loan (HTTP GET), modifying its due-date, and rewriting it (HTTP PUT). So we will want a very efficient, readable way of specifying such operations.
 
-#### Transformations
+#### Record manipulation
 
-XXX Adding fields, modifying them, deleting them
+Manipulation of records will be the other major part of most workflows. These changes, typically made to a single field at a time, fall into several categories:
+
+* Adding a field, or appending a new subfield to an existing field.
+* Replacing the value of an existing field.
+* Deleting a field or a subfield.
+
+It seems clear that the model will need to recognise subfields from the outset, and that we may need to handle both structured and list fields (analogous to JSON objects and arrays).
+
+It is not yet clear whether the Workflow Engine will need to be schema-aware, or whether it will suffice to blindly operate on named fields.
+
+Transformations of fields will need to be supported: at minimum, the ability to copy one field, transformed by regular-expression substitution, either to another field or back to itself. For example, we may need a workflow step to normalise names from "Brian W. Kerninghan" form to "Kerninghan, Brian W." form:
+```
+assign author = author: /(.*) (.*)/ to "\2, \1"
+```
+
+Or to reset a loan date while remembering the old one:
+```
+append oldReturnDates = returnDate
+assign returnDate = $1
+```
+
 
 #### Control flow
 
