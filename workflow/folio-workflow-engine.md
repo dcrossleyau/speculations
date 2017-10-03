@@ -27,7 +27,7 @@
         * [XML or JSON](#xml-or-json)
         * [Human-readable/writeable DSL](#human-readablewriteable-dsl)
         * [Compiled form](#compiled-form)
-        * [Visual](#visual)
+        * [Visual representation](#visual-representation)
         * [Discussion](#discussion)
     * [Operations](#operations)
         * [Okapi calls](#okapi-calls)
@@ -382,9 +382,9 @@ It's likely that we will find ourselves sketching workflows in a high-level pseu
 
 When a workflow is loaded into the engine -- whether from an XML/JSON format file, or a DSL -- the result will be an in-memory representation, most likely a tree, that can be directly executed. We may find it useful to eliminate the overhead of parsing and compiling by storing the compiled version in a binary format that can be loaded very quickly -- analogous to Java's `.class` files. Or perhaps the potential efficiency gain will be little enough that we benefit more from simplicity of just compiling every time and running directly from the internal representation, as Perl, Python and JavaScript do.
 
-#### Visual
+#### Visual representation
 
-XXX In v2, Filip's UK will guide us into a visual representation of workflows. The Workflow Editor UI module will need to parse stores workflows (from XML/JSON or a DSL) to determine what to draw; and render edited drawings into a form to send back to the server.
+The fourth and final form of workflows is the visual representation that will appear in the v2 Workflow Editor. This will need to parse stored workflows (from XML/JSON or a DSL) to determine what to draw on the page; and it will need to render edited drawings back into a form to send back to the server.
 
 #### Discussion
 
