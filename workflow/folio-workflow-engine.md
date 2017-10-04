@@ -549,13 +549,12 @@ Some specific issues:
 
 ### Error handling
 
-XXX If a step fails, do we fail the whole job? We can report back to the person who initiated the job.
+The complex, parallelised and long-running nature of workflow jobs means the error handling is going to be rather more complex than in most software. In general, we will want to support various severity levels: some causing the whole job to fail immediately, others alowing the job to continue but being accumulated somewhere so that they can be inspected after the job completes (or, for that matter, while it's still ongoing). For example, consider the unboxing scenario above: perhaps three of the books can't be shelved, but that is no reason not to handle the others. At the end, there should be a report, "here are the three books we weren’t able to do anything with, and here are the reasons why we couldn't handle each of them."
 
-XXX In the unboxing example: "here’s a report of the three things we weren’t able to do anything with."
+XXX It all just needs to be configurable, maybe even on the level that a job could have an error list, and every step could have some checkboxes on how to handle things going wrong. Bit like we did in CF.
 
 XXX The workflow may have multiple operations on the go at once (e.g. "when these three parallel tasks are complete, go on to Step X). How do we handle recovert if one of them fails after others have already succeeded?
 
-XXX Heikki writes: There can be various levels of errors, some failing the whole job, some reporting back the three items that failed, etc. It all just needs to be configurable, maybe even on the level that a job could have an error list, and every step could have some checkboxes on how to handle things going wrong. Bit like we did in CF.
 
 
 
