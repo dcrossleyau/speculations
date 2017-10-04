@@ -509,7 +509,9 @@ Note that this requirement makes explicit the notion that workflows must take ar
 
 #### Human interaction
 
-XXX Hardest part
+So far, all the operations we have considered can be executed by the computer: they constitute automation. But what marks workflow out is that it involves the actions of humans. The workflow language will need a way to express what inputs are required from users, and which users can provide them. In some cases, an individual user may be specified; in others, any member of a specified group will suffice. In yet other situations, we might want to specify that particular action can be completed by any user with a specific permission.
+
+The problems of notifying users of their responsibilities, and of resuming a workflow once their operations are completed, are among the most difficult to be solved in implementing workflow. We will discuss them in more detail [below](#tracking-jobs).
 
 #### Other
 
