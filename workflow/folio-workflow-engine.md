@@ -338,7 +338,7 @@ With these analogies in mind, and aware of the three workflow scenarios outlined
 
 Leaving aside the v2 Workflow Editor, which is outside the scope of this document, we expect that most or all of the workflow implementation will be on the back-end. In fact, this is necessary for it to function in automation: we cannot have background tasks stop executing when the user's browser is closed. So while workflows will often be invoked from the front-end, the effects must run mostly on the back-end. (Some workflows will also be started from the back-end: for example, scheduled jobs.)
 
-In some cases, front-end involvement will of course be necessary: for example, when a librarian is required to OK a purchase. Much of the design work in the Workflow system pertains to how this can be done. The most promising approach seems to be using the FOLIO notification system to inform individuals when a task await their input. Then we can make it possible for individuals to configure how that system treats various kinds of notifications: for example, low-priority tasks may simply be queued within FOLIO, to be picked up when the user finds it convenient; higher-priority tasks can be emailed out to solicit a more rapid response; and top-priority tasks might even interrupt a user who is working elsewhere within FOLIO. (As always, our goal here is to provide mechanism, not dictate policy.)
+In some cases, front-end involvement will of course be necessary: for example, when a librarian is required to OK a purchase. Much of the design work in the Workflow system pertains to how this can be done. The most promising approach seems to be using the FOLIO notification system to inform individuals when a task await their input. Then we can make it possible for individuals to configure how that system treats various kinds of notifications: for example, low-priority tasks may simply be queued within FOLIO, to be picked up when the user finds it convenient; higher-priority tasks can be emailed out to solicit a more rapid response; and top-priority tasks might even interrupt a user who is working elsewhere within FOLIO. (As always, our goal here is to provide mechanism, not dictate policy.) <!-- XXX maybe move some of this down into "Tracking jobs" or the appendix. -->
 
 In other cases, front-end/back-end interaction will be simpler and more transitory. Consider for example a workflow to create a new item record based on a specific instance. The workflow will embody the knowledge of which instance fields to copy across to the new item record, and how to modify those fields, but the result will likely not be the immediate creation of a new item record, but rather transitioning the UI to a "create new item" page with the form already largely filled in. In this scenario, we expect that no new record is persisted within FOLIO until the user hits the Save button.
 
@@ -522,16 +522,30 @@ Besides actual operations, other kinds of nodes are likely to occur inside parse
 
 ### Tracking jobs
 
-XXX A back-end module for CRUDding the status of jobs based on workflows. Will likely consist of a tree of pointers to job-step objects, each with its own state. Will not need to be transmitted, so no need for a serialised or human-readable form.
+While workflows are relatively permanenet and static (like computer programs), workflows _instances_, or jobs, are temporary and dynamic (like Unix processes). Their state will change throughout their liftime: even the simplest job will have a program-counter or equivalent pointer to the specific step that is in the process of being executed.
 
-Raises issues:
+This would not raise any difficulty if we were merely building an automation system: in that case, jobs would be short-lived, and could reside entirely in memory. But the need for human intervention in workflows raies many difficulties. In particular, it requires us to somehow "freeze" the state of a job, potentially for many days, and subsequently resume it in response to a trigger.
 
-* How do we store the state of the in-progress workflow?
-* What person, or class of people, may perform the required action?
-* How do we notify the person or class that the action needs to be performed?
-* How do we recognise when the action has been completed?
-* How do we notify other members of a class when one of them has done it?
-* How do we result the correct workflow when the action has been completed?
+Some specific issues:
+
+* **How do we store the state of the in-progress workflow when a human action is required?** We will likely need a back-end module for CRUDding the status of jobs. This status will consist of st least a reference to the workflow that is being run, a pointer into that workflow indicating which step to run next, and some information about what human interventions are awaited. This status will not need to be transmitted outside of the server, so there is no need for a serialised or human-readable form.
+
+* **What person, or class of people, may perform the required action?** We will want some flexibility in how a workflow is able to specify this. In some cases, we will want specifically to require that it be the person who launched the present instance of the workflow.
+
+* **How do we notify the person or class that the action needs to be performed?** Hopefully the general-puspose notification system will work well for this, and will provide an appropriate level of configurability.
+
+* **How do we recognise when the action has been completed?** There are broadly two approaches to this: either the workflow engine can periodically poll the state of all pending actions; or non-workflow objects can have triggers attached to them. For the latter approach, consider job #3456, which requires a librarian to validate purchase order #99. Then we would add a trigger to purchase order #99 saying "when validated, trigger job #3456".
+
+* **How do we notify other members of a class when one of them has done it?** We don't want to have a dozen finance-approved librarians all to go to approve the same purchase order, only for eleven of them to find it's already been done, so we will want to cancel notifications that have been sent. Sending a new "This has been done so you don't need to" notification would be a start; better still would be simply deleting any of the original notification that have not been read, so that the other librarians never even need to know that anything happened.
+
+* **What happens if someone other than a member of a nominated class performs the action?** For example, is a purchase is approved by someone from a different department who happens to have the necessary authority. We will want this to trigger the continuation of the workflow just as though one of the nominated people had performed the action -- in fact, we probably don't even want to make a distinction between nominated people and others, except in terms of sending notifcations to the former (and cancelling them when appropriate). This is an additional argument for the idea that the state-change itself must trigger the continuation of the workflow, rather than using an approach where the job itself is in control of the sequence of operations.
+
+* **How do we resume the correct workflow when the action has been completed?** Using either the polling approach or the triggering approach, FOLIO will be in a position to know when an event that a job is dependent on has been completed. At this stage, it will need to hand control back to the job, which can then determine whether _all_ the dependent tasks have been completed, or if more remain. If they have all been completed, then execution can resume from the next instruction that the program-counter points to.
+
+* **How can we cope when a single action triggers the resumption of multiple jobs?** This scenario would occur if, for example, a patron has a hold on a circulated item, and that patron's issue-new-loan job wakes up when the item is returned to the library; and a librarian has also started a workflow to do with refurbishing the itme. Then both jobs depend on the same event, the return of the item. In this case, either the polling will need to recognise that multiple job have had their blocking tasks completed, or the item record in question will need multiple triggers to be installed.
+
+* **What can we do if a workflow is edited while an instance of it is running?** Because a job may run for a long time, it's quite possible that the workflow that it's an instance of may be edited. This will render the program-counter stored in the persistent job incorrect. The simplest solution is to have the job carry a complete copy of the workflow that it's running. There are more efficient, though correspondingly more complex, solutions. For example, if each job only references a workflow, then the code that updates a workflow could keep the old version around if there are any running jobs that reference it, with some kind of garbage-collection mechanism to dispose of no-longer-referenced workflows once their jobs are complete.
+
 
 ### Error handling
 
