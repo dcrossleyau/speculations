@@ -524,6 +524,14 @@ Besides actual operations, other kinds of nodes are likely to occur inside parse
 
 XXX A back-end module for CRUDding the status of jobs based on workflows. Will likely consist of a tree of pointers to job-step objects, each with its own state. Will not need to be transmitted, so no need for a serialised or human-readable form.
 
+Raises issues:
+
+* How do we store the state of the in-progress workflow?
+* What person, or class of people, may perform the required action?
+* How do we notify the person or class that the action needs to be performed?
+* How do we recognise when the action has been completed?
+* How do we notify other members of a class when one of them has done it?
+* How do we result the correct workflow when the action has been completed?
 
 ### Error handling
 
