@@ -515,7 +515,9 @@ The problems of notifying users of their responsibilities, and of resuming a wor
 
 #### Other
 
-XXX What else?
+Besides these operations, there will no doubt be others that we've missed so far: perhaps ways to use some form of local storage for persistent state that is outside of the library objects, for example. So the list above should be considered indicative, not definitive.
+
+Besides actual operations, other kinds of nodes are likely to occur inside parse trees: regular expressions, for example (which may be reified as a type), arithmetic operations, string-manipulation primitives, and so on. (Perhaps these can be implemented as functions within the workflow DSL, rather than being true primitives.)
 
 
 ### Tracking jobs
