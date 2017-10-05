@@ -551,10 +551,17 @@ Some specific issues:
 
 The complex, parallelised and long-running nature of workflow jobs means the error handling is going to be rather more complex than in most software. In general, we will want to support various severity levels: some causing the whole job to fail immediately, others alowing the job to continue but being accumulated somewhere so that they can be inspected after the job completes (or, for that matter, while it's still ongoing). For example, consider the unboxing scenario above: perhaps three of the books can't be shelved, but that is no reason not to handle the others. At the end, there should be a report, "here are the three books we weren’t able to do anything with, and here are the reasons why we couldn't handle each of them."
 
-XXX It all just needs to be configurable, maybe even on the level that a job could have an error list, and every step could have some checkboxes on how to handle things going wrong. Bit like we did in CF.
+The way to handle errors needs to be configurable not just at the level of a workflow, but at the lower level of individual steps within the workflow: it is a matter for the creator of a given workflow to judge whether a given error should be fatal, or merely stored up to be reported while the job continues.
 
-XXX The workflow may have multiple operations on the go at once (e.g. "when these three parallel tasks are complete, go on to Step X). How do we handle recovert if one of them fails after others have already succeeded?
+An additional level of complexity is introduced by the requirement for the workflow engine to allow several subtasks to run in parallel. What should happen when one of these fails?
 
+* Should the whole parallel operation be considered to have failed?
+* If so, should some attempt be made to roll back any of the other parallel tasks that have already run to completion?
+* If some of the successful peer tasks were carried out by humans, should we notify them?
+* If so, should we ask them whether or not to attempt reversion?
+* How configurable should all of this be?
+
+Much of the detail of this can be, and will need to be, deferred until well after the initial implementation, but it's important to appreciate the complexities to be sure we don't make some decision early on that precludes flexibility later.
 
 
 
