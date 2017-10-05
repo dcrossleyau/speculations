@@ -1,5 +1,9 @@
 # White paper: the FOLIO workflow engine
 
+Mike Taylor, Index Data `<mike@indexdata.com>`
+
+Document version 1.0 (5 October 2017).
+
 <!-- md2toc -l 2 folio-workflow-engine.md -->
 * [Preface: what this document is](#preface-what-this-document-is)
 * [Background](#background)
@@ -591,9 +595,11 @@ The notification system itself a significant piece of work. It may be best to co
 
 &nbsp;
 
-> **XXX NOTE TO SELF**: get David to proof-read this document before releasing.
+--
 
-> **XXX NOTE TO SELF**: consider Charlotte's use-cases: https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637
+**XXX NOTES TO SELF**:
 
-> **XXX NOTE TO SELF**: consider Filip's presentation of workflow editor UX: https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041
+Consider Charlotte's use-cases: https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637
+
+Consider Filip's presentation of workflow editor UX: https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041
 
