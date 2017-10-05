@@ -338,7 +338,7 @@ With these analogies in mind, and aware of the three workflow scenarios outlined
 
 Leaving aside the v2 Workflow Editor, which is outside the scope of this document, we expect that most or all of the workflow implementation will be on the back-end. In fact, this is necessary for it to function in automation: we cannot have background tasks stop executing when the user's browser is closed. So while workflows will often be invoked from the front-end, the effects must run mostly on the back-end. (Some workflows will also be started from the back-end: for example, scheduled jobs.)
 
-In some cases, front-end involvement will of course be necessary: for example, when a librarian is required to OK a purchase. Much of the design work in the Workflow system pertains to how this can be done. The most promising approach seems to be using the FOLIO notification system to inform individuals when a task await their input. Then we can make it possible for individuals to configure how that system treats various kinds of notifications: for example, low-priority tasks may simply be queued within FOLIO, to be picked up when the user finds it convenient; higher-priority tasks can be emailed out to solicit a more rapid response; and top-priority tasks might even interrupt a user who is working elsewhere within FOLIO. (As always, our goal here is to provide mechanism, not dictate policy.) <!-- XXX maybe move some of this down into "Tracking jobs" or the appendix. -->
+In some cases, front-end involvement will of course be necessary: for example, when a librarian is required to OK a purchase. Much of the design work in the Workflow system pertains to how this can be done. The most promising approach seems to be using the FOLIO notification system to inform individuals when a task await their input. Then we can make it possible for individuals to configure how that system treats various kinds of notifications: see [the Appendix](#appendix-using-the-notification-system) for details.
 
 In other cases, front-end/back-end interaction will be simpler and more transitory. Consider for example a workflow to create a new item record based on a specific instance. The workflow will embody the knowledge of which instance fields to copy across to the new item record, and how to modify those fields, but the result will likely not be the immediate creation of a new item record, but rather transitioning the UI to a "create new item" page with the form already largely filled in. In this scenario, we expect that no new record is persisted within FOLIO until the user hits the Save button.
 
@@ -567,9 +567,27 @@ Much of the detail of this can be, and will need to be, deferred until well afte
 
 ## Appendix: using the notification system
 
-XXX We will want to do all notification using the notification system: "please authorize this", "your request has been accepted/rejected", "your job failed", etc. Users will want different kinds of message communicated in different ways, e.g. some by email, some by text-message, some waiting on the system until the next login. So notifications need a "type" drawn from a small controlled vocabulary (as well as other extensions such as sender, date, subject)
+It is clear that workflow will need to use a notification system to inform human users that their input is required, and quite possibly also to inform the workflow engine when such human tasks have been completed. Sample notifications might include:
 
+* "Please authorize this purchase."
+* "Please consider this suggested change to cataloging."
+* "Someone else has done this task, there is no need for you to do it."
+* "Your purchase request has been accepted."
+* "Your purchase request has been rejected."
+* "The job you started has completed successfully."
+* "The job you started has failed, with the following errors ..."
 
+In this document, we have assumed that workflow will use the FOLIO notification system that has already been [designed and prototyped](http://ux.folio.org/prototype/en/users?popover=notifications), rather than creating a new, largely overlapping, system. However, in order to fully serve workflows, though, the notification system will need to be flexible and configurable in ways that may not have previously been envisaged.
+
+* We will need a notion of notification title -- a short piece of text analogous to an email's subject-line -- so that many notifications can be listed in a compact form.
+
+* We will need a notion of notification type: a token drawn from a small controlled vocabulary that will include values such as `po` (requesting sign-off on a purchase-order), `cat` (a cataloging request) and `ok` (notification of a successfully completed job). This will enable users to see at a glance what kind of work awaits them, and to sort notifications into categories so that they can, for example, handle all the cataloging requests together.
+
+* We will need to provide users with the ability to configure how different types of notification are handled. For example, a librarian may elect to leave low-priority tasks such as a cataloging changes to be queued within FOLIO, to be picked up when the user finds it convenient; higher-priority tasks could be emailed out to solicit a more rapid response; and top-priority tasks might even interrupt a user who is working elsewhere within FOLIO. (As always, our goal here is to provide mechanism, not dictate policy.)
+
+* Since we will need in some cases to forward notifications for delivery as email, it may be useful for notifications to have other fields analogous to those used in email, e.g. From, Date.
+
+The notification system itself a significant piece of work. It may be best to consider gateways that deliver notification via mechanisms such as email, text-message, tweet, etc., as their own separate and optional modules.
 
 &nbsp;
 
