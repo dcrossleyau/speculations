@@ -51,12 +51,12 @@ Document version 1.0 (5 October 2017).
 
 This is an overview of what workflow is or could be in FOLIO, how it breaks down into v1 and v2 features, what implications it has for the broader FOLIO architecture, and how we might go about implementing the v1 parts of it without circumscribing our options for the v2 parts when the time comes.
 
-Much of what is contained herein was first discussed in the Workflow breakout group on the morning of Friday 20 September 2017, in the Montreal FOLIO developer's meeting. Contributors in that session included 
+Much of what is contained herein was first discussed in the Workflow breakout group on the morning of Friday 20 September 2017, in the Montreal FOLIO developer's meeting. Contributors in that session included
 D Ellen Bonner,
 Ian Ibbotson,
 Heikki Levanto,
 Peter Murray,
-Nassib Nasar,
+Nassib Nassar,
 Jason Skomorowski,
 and
 Mike Taylor.
@@ -82,9 +82,9 @@ We need to think about this now, rather then deferring until after the v1 releas
 
 ### Terminology
 
-* A _workflow_ is a set of instructions for FOLIO and/or human users, expressing how to carry out a task. In v1, we will author these by hand, and in v2 there will be an editor. Either way, except when being edited, these are static, like classes in objct-oriented programs.
+* A _workflow_ is a set of instructions for FOLIO and/or human users, expressing how to carry out a task. In v1, we will author these by hand, and in v2 there will be an editor. Either way, except when being edited, these are static, like classes in object-oriented programs.
 
-* A _workflow instance_ is a specific running instance of a workflow. It has parameters that may be set when it's started (e.g. the title of a book to order) and its own state that changes as the task progresseds (e.g. the status of an ongoing order). It resembles and instance of class in an objct-oriented program.
+* A _workflow instance_ is a specific running instance of a workflow. It has parameters that may be set when it's started (e.g. the title of a book to order) and its own state that changes as the task progresses (e.g. the status of an ongoing order). It resembles and instance of class in an object-oriented program.
 
 * A _job_ is a simpler term for a workflow instance.
 
@@ -115,7 +115,7 @@ The following rather unlikely sequence of actions involved in placing a purchase
 
 * A patron wants to read a certain book -- an edition of _Pride and Prejudice_ with an interesting introductory essay, say -- but it is not in the library. She submits a request.
 
-* A paraprofessional (see below) picks up the request and finds a source for a hardback edtion of the book. He submits it as a purchase request.
+* A paraprofessional (see below) picks up the request and finds a source for a hardback edition of the book. He submits it as a purchase request.
 
 * An acquisitions librarian picks up the purchase request and notices that the suggested edition is expensive. She pushes that purchase request back to the patron, asking whether there is any reason that an inexpensive paperback edition will not suffice.
 
@@ -171,7 +171,7 @@ Workflows for dissertation submission vary widely between libraries. Here is one
 
 * Once the dissertation is accepted (whether with or without revisions), the cataloguing librarian writes an abstract and it is added to the library catalogue.
 
-Note that this example extends FOLIO workflow's influence outside the library to the institutional repository and even potentially to the disseratation examination process.
+Note that this example extends FOLIO workflow's influence outside the library to the institutional repository and even potentially to the dissertation examination process.
 
 
 
@@ -207,7 +207,7 @@ obtainBookFrom(book, vendor)
 
 The former is terser and more elegant when it works, but the latter is more explicit and expressive. It's nice to imagine that we could support the simpler style when it's sufficiently expressive, but also the more explicit style when it's needed.
 
-Is there precendent in existing programming languages for suppoting both styles? The shell itself offers something along these lines, but it is rather inelegant. The second approach would look like:
+Is there precedent in existing programming languages for supporting both styles? The shell itself offers something along these lines, but it is rather inelegant. The second approach would look like:
 ```
 getPatronRequest `cat book` > request
 cat request | findSource > vendor
@@ -240,9 +240,9 @@ Since we will need a notion of type, we may well wish to make it more explicit a
 
 ### Workflow state vs. object state
 
-Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purcahse as "awaiting purchase authorization"?
+Does a workflow instance have its own state separate from the state of the objects it deals with? That is, does it suffice to mark a purchase as "needs authorization", or do we also need to mark the workflow instance that generated this purchase as "awaiting purchase authorization"?
 
-Suppose the progress of a job is halted on the need for a purchase order to be okayed by someone with sufficient authority. We do not need to assign the responsiblity for doing this to an individual: there may be a whole group of people who can OK the purchase. So it's tempting to imagine we could place some kind of trigger on the purchase record itself to restart the workflow, and so avoid having the workflow instance itself track where it is in its sequence of operations. But making all the other kinds of task workflow-aware may spread the responsibility thinner than we want. Lots more thought required here.
+Suppose the progress of a job is halted on the need for a purchase order to be okayed by someone with sufficient authority. We do not need to assign the responsibility for doing this to an individual: there may be a whole group of people who can OK the purchase. So it's tempting to imagine we could place some kind of trigger on the purchase record itself to restart the workflow, and so avoid having the workflow instance itself track where it is in its sequence of operations. But making all the other kinds of task workflow-aware may spread the responsibility thinner than we want. Lots more thought required here.
 
 If the workflow instance has its own state, then we can tie together related operations after the event. Workflow can be a useful source of audit capability, perhaps saving individual services from having to do excessive audit logging.
 
@@ -268,7 +268,7 @@ To help guide our thinking as we begin to consider implementation, it's useful t
 
 A workflow can be seen as defining a state machine with a start state, a desired end state, and a set of transitions between states which can result in arriving at the end state.
 
-Considering it in these terms may help us to think more clearly about what kind of state needs to be represented and where it is best maintained. Most fundamental here is the question of how much state we want to centralise within the workflow instance itself, and how much can reside in the affected objects (items, instances, etc).
+Considering it in these terms may help us to think more clearly about what kind of state needs to be represented and where it is best maintained. Most fundamental here is the question of how much state we want to centralise within the workflow instance itself, and how much can reside in the affected objects (items, instances, etc.).
 
 In practical terms, the entire FOLIO database contains state (as all databases do). This is far too much state to model coherently, and we will be interested in the transitions between possible states of only a small part of this.
 
@@ -304,7 +304,7 @@ fundsAcquired: requestReceived
 	doFundsAcquiredActions
 ```
 
-(In practice, most implementations of `make` run tasks one at a time, but some implementatiins really do run parallel tasks simulaneously on multi-processor machines.)
+(In practice, most implementations of `make` run tasks one at a time, but some implementations really do run parallel tasks simultaneously on multi-processor machines.)
 
 If we go some way towards adopting this model, we will face the challenge of integrating `make`-like dependency-graph syntax with the more conventional programming-language syntax used in whatever DSL we come up with.
 
@@ -325,11 +325,11 @@ Connector Framework (CF), and experience gained on that project may be valuable 
 
 ### Very high-level DSL
 
-Another way to think of workflows is as programs written in a very high-level domain-specific language (DSL). In this language, fundamental operations are not on integers and strings, but on high-level objects such as items, loans and invoices. Many operations will be implemented in whole or in part by CRUD reqeusts against Okpai.
+Another way to think of workflows is as programs written in a very high-level domain-specific language (DSL). In this language, fundamental operations are not on integers and strings, but on high-level objects such as items, loans and invoices. Many operations will be implemented in whole or in part by CRUD requests against Okapi.
 
 In these respects, such a DSL will resemble commands in the forthcoming Okapi CLI ([OKAPI-425](https://issues.folio.org/browse/OKAPI-425)).
 
-Howeverm a workflow DSL will require control-flow primitives -- and, most likely, domain-specific primitives such as the ability to iterate over all books in a delivery, or all items related to an intance. See [below](#control-flow).
+However a workflow DSL will require control-flow primitives -- and, most likely, domain-specific primitives such as the ability to iterate over all books in a delivery, or all items related to an instance. See [below](#control-flow).
 
 
 
@@ -349,19 +349,19 @@ In other cases, front-end/back-end interaction will be simpler and more transito
 
 ### Virtual Machine for running workflows
 
-At the heart of the Workflow Engine will be a virtual machine that can interpret instructions to execute the high-level actions that constutite a job. It will need the ability to load the instructions that make up a workflow using some persistent format (see the next section), and to move through the steps while maintaining an approrpriate notion of the workflow's state, which must be able to persist across long jobs that involve human intervention.
+At the heart of the Workflow Engine will be a virtual machine that can interpret instructions to execute the high-level actions that constitute a job. It will need the ability to load the instructions that make up a workflow using some persistent format (see the next section), and to move through the steps while maintaining an appropriate notion of the workflow's state, which must be able to persist across long jobs that involve human intervention.
 
 We have at least two candidate approaches for how to implement the Workflow VM. These re:
 
 * Interpreting each operation and executing it directly from an engine.
 
-* Compiling workflow to some existing language and running it within the that language's execution environment, in the presence of a runtime system that provides the necessary APIs for actually executing the steps. For example, we might compile to JVM instructions (or to a JVM language such as Groovy or Java itelf) and run inside a Java Virtual Machine; or compile to JavaScript, and run under the Node interpreter.
+* Compiling workflow to some existing language and running it within the that language's execution environment, in the presence of a runtime system that provides the necessary APIs for actually executing the steps. For example, we might compile to JVM instructions (or to a JVM language such as Groovy or Java itself) and run inside a Java Virtual Machine; or compile to JavaScript, and run under the Node interpreter.
 
 While the second approach is superficially appealing in that is seems to give us less work to do, that is largely an illusion: providing the runtime support will be the great bulk of the work. In comparison, creating an interpreter loop that can execute control-flow primitives as well as FOLIO operations will be only a little more work, but give us much more flexibility -- especially in dealing with the thorny difficulty of blocking on steps that require human action that may not be completed for days or weeks.
 
 At least initially, the control gained by executing workflows inside
-our own VM outweighs any possible performace gain from compiling to a
-language with an optimised execution environment. And this is likley
+our own VM outweighs any possible performance gain from compiling to a
+language with an optimised execution environment. And this is likely
 to remain true, as the overhead of primitives like looping and
 branching is going to be absolutely swamped by the much more expensive
 operations being executed: Okapi requests and suchlike.
@@ -394,7 +394,7 @@ The fourth and final form of workflows is the visual representation that will ap
 
 #### Discussion
 
-Four representations of workflows certainly feels like too many. For the moment. we can simplify matters by ignoring the visual representation, which certainly will not be in v1, but certainly will need to appear in a subsequent version. Of the other three representations, how many do we need?
+Four representations of workflows certainly feels like too many. For the moment. We can simplify matters by ignoring the visual representation, which certainly will not be in v1, but certainly will need to appear in a subsequent version. Of the other three representations, how many do we need?
 
 We can certainly do without the compiled form, at least in early versions of the workflow implementation. This is purely an optimisation, to reduce parsing overhead, and can be ignored until and unless profiling shows that it is needed.
 
@@ -402,7 +402,7 @@ But that still leaves is with two forms: XML/JSON and the DSL. In one conception
 
 So it seems possible that we have no pressing need for an XML/JSON form.
 
-What language should we write the DSL parser in? (Or, if we decide to make an XML/JSON representation canonical, the parser that translates raw parse trees into an executable form?) In a future version of FOLIO, we will need to parse and render this language on the client side for the Workflow Editor, so we will need an implementation of the parser/renderer in JavaScript. That suggests we should create those JaveScript implementations for version 1, using them on the server side initially, and avoid later having two separate implementation in different languages. This may mean that the workflow compiler becomes the first Okapi module written in JavaScript; or it may entail somehow calling out from an RMB-based module into a separate JavaScript compiler/renderer.
+What language should we write the DSL parser in? (Or, if we decide to make an XML/JSON representation canonical, the parser that translates raw parse trees into an executable form?) In a future version of FOLIO, we will need to parse and render this language on the client side for the Workflow Editor, so we will need an implementation of the parser/renderer in JavaScript. That suggests we should create those JavaScript implementations for version 1, using them on the server side initially, and avoid later having two separate implementation in different languages. This may mean that the workflow compiler becomes the first Okapi module written in JavaScript; or it may entail somehow calling out from an RMB-based module into a separate JavaScript compiler/renderer.
 
 
 ### Data types
@@ -421,7 +421,7 @@ But also possibly domain-specific types:
 * `instance`
 * `loan`
 
-It is an open question whether we need to reify domain-dependent concepts such as items and instances, or whether it will suffice to blindly operate on named fields. If we do add type-specific operatoins, where would they be defined? If the Engine is made schema-aware, and is able to read the necessary JSON Schema files (where from?), what additional capabilities would that facilitate?
+It is an open question whether we need to reify domain-dependent concepts such as items and instances, or whether it will suffice to blindly operate on named fields. If we do add type-specific operations, where would they be defined? If the Engine is made schema-aware, and is able to read the necessary JSON Schema files (where from?), what additional capabilities would that facilitate?
 
 
 ### Operations
@@ -487,7 +487,7 @@ And perhaps some domain-specific iterators:
 
 It's not yet clear how these would best be expressed, and whether they would need the schema-aware type system hinted at [above](#data-types).
 
-More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#makefile-like-dependency-tree) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days, so parallelising is indispensible to avoid long delays.
+More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#makefile-like-dependency-tree) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days, so parallelising is indispensable to avoid long delays.
 
 How might such a control-flow be most cleanly expressed? Perhaps something like a `doall` keyword which governs a comma-separated list of statements?
 ```js
@@ -526,9 +526,9 @@ Besides actual operations, other kinds of nodes are likely to occur inside parse
 
 ### Tracking jobs
 
-While workflows are relatively permanenet and static (like computer programs), workflows _instances_, or jobs, are temporary and dynamic (like Unix processes). Their state will change throughout their liftime: even the simplest job will have a program-counter or equivalent pointer to the specific step that is in the process of being executed.
+While workflows are relatively permanent and static (like computer programs), workflows _instances_, or jobs, are temporary and dynamic (like Unix processes). Their state will change throughout their lifetime: even the simplest job will have a program-counter or equivalent pointer to the specific step that is in the process of being executed.
 
-This would not raise any difficulty if we were merely building an automation system: in that case, jobs would be short-lived, and could reside entirely in memory. But the need for human intervention in workflows raies many difficulties. In particular, it requires us to somehow "freeze" the state of a job, potentially for many days, and subsequently resume it in response to a trigger.
+This would not raise any difficulty if we were merely building an automation system: in that case, jobs would be short-lived, and could reside entirely in memory. But the need for human intervention in workflows raises many difficulties. In particular, it requires us to somehow "freeze" the state of a job, potentially for many days, and subsequently resume it in response to a trigger.
 
 Some specific issues:
 
@@ -536,24 +536,24 @@ Some specific issues:
 
 * **What person, or class of people, may perform the required action?** We will want some flexibility in how a workflow is able to specify this. In some cases, we will want specifically to require that it be the person who launched the present instance of the workflow.
 
-* **How do we notify the person or class that the action needs to be performed?** Hopefully the general-puspose notification system will work well for this, and will provide an appropriate level of configurability.
+* **How do we notify the person or class that the action needs to be performed?** Hopefully the general-purpose notification system will work well for this, and will provide an appropriate level of configurability.
 
 * **How do we recognise when the action has been completed?** There are broadly two approaches to this: either the workflow engine can periodically poll the state of all pending actions; or non-workflow objects can have triggers attached to them. For the latter approach, consider job #3456, which requires a librarian to validate purchase order #99. Then we would add a trigger to purchase order #99 saying "when validated, trigger job #3456".
 
 * **How do we notify other members of a class when one of them has done it?** We don't want to have a dozen finance-approved librarians all to go to approve the same purchase order, only for eleven of them to find it's already been done, so we will want to cancel notifications that have been sent. Sending a new "This has been done so you don't need to" notification would be a start; better still would be simply deleting any of the original notification that have not been read, so that the other librarians never even need to know that anything happened.
 
-* **What happens if someone other than a member of a nominated class performs the action?** For example, is a purchase is approved by someone from a different department who happens to have the necessary authority. We will want this to trigger the continuation of the workflow just as though one of the nominated people had performed the action -- in fact, we probably don't even want to make a distinction between nominated people and others, except in terms of sending notifcations to the former (and cancelling them when appropriate). This is an additional argument for the idea that the state-change itself must trigger the continuation of the workflow, rather than using an approach where the job itself is in control of the sequence of operations.
+* **What happens if someone other than a member of a nominated class performs the action?** For example, is a purchase is approved by someone from a different department who happens to have the necessary authority. We will want this to trigger the continuation of the workflow just as though one of the nominated people had performed the action -- in fact, we probably don't even want to make a distinction between nominated people and others, except in terms of sending notifications to the former (and cancelling them when appropriate). This is an additional argument for the idea that the state-change itself must trigger the continuation of the workflow, rather than using an approach where the job itself is in control of the sequence of operations.
 
 * **How do we resume the correct workflow when the action has been completed?** Using either the polling approach or the triggering approach, FOLIO will be in a position to know when an event that a job is dependent on has been completed. At this stage, it will need to hand control back to the job, which can then determine whether _all_ the dependent tasks have been completed, or if more remain. If they have all been completed, then execution can resume from the next instruction that the program-counter points to.
 
-* **How can we cope when a single action triggers the resumption of multiple jobs?** This scenario would occur if, for example, a patron has a hold on a circulated item, and that patron's issue-new-loan job wakes up when the item is returned to the library; and a librarian has also started a workflow to do with refurbishing the itme. Then both jobs depend on the same event, the return of the item. In this case, either the polling will need to recognise that multiple job have had their blocking tasks completed, or the item record in question will need multiple triggers to be installed.
+* **How can we cope when a single action triggers the resumption of multiple jobs?** This scenario would occur if, for example, a patron has a hold on a circulated item, and that patron's issue-new-loan job wakes up when the item is returned to the library; and a librarian has also started a workflow to do with refurbishing the item. Then both jobs depend on the same event, the return of the item. In this case, either the polling will need to recognise that multiple job have had their blocking tasks completed, or the item record in question will need multiple triggers to be installed.
 
 * **What can we do if a workflow is edited while an instance of it is running?** Because a job may run for a long time, it's quite possible that the workflow that it's an instance of may be edited. This will render the program-counter stored in the persistent job incorrect. The simplest solution is to have the job carry a complete copy of the workflow that it's running. There are more efficient, though correspondingly more complex, solutions. For example, if each job only references a workflow, then the code that updates a workflow could keep the old version around if there are any running jobs that reference it, with some kind of garbage-collection mechanism to dispose of no-longer-referenced workflows once their jobs are complete.
 
 
 ### Error handling
 
-The complex, parallelised and long-running nature of workflow jobs means the error handling is going to be rather more complex than in most software. In general, we will want to support various severity levels: some causing the whole job to fail immediately, others alowing the job to continue but being accumulated somewhere so that they can be inspected after the job completes (or, for that matter, while it's still ongoing). For example, consider the unboxing scenario above: perhaps three of the books can't be shelved, but that is no reason not to handle the others. At the end, there should be a report, "here are the three books we weren’t able to do anything with, and here are the reasons why we couldn't handle each of them."
+The complex, parallelised and long-running nature of workflow jobs means the error handling is going to be rather more complex than in most software. In general, we will want to support various severity levels: some causing the whole job to fail immediately, others allowing the job to continue but being accumulated somewhere so that they can be inspected after the job completes (or, for that matter, while it's still ongoing). For example, consider the unboxing scenario above: perhaps three of the books can't be shelved, but that is no reason not to handle the others. At the end, there should be a report, "here are the three books we weren’t able to do anything with, and here are the reasons why we couldn't handle each of them."
 
 The way to handle errors needs to be configurable not just at the level of a workflow, but at the lower level of individual steps within the workflow: it is a matter for the creator of a given workflow to judge whether a given error should be fatal, or merely stored up to be reported while the job continues.
 
