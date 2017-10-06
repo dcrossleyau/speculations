@@ -2,7 +2,15 @@
 
 Mike Taylor, Index Data `<mike@indexdata.com>`
 
-Document version 1.0 (5 October 2017).
+Document version 1.2 (6 October 2017).
+
+Version history:
+* 1.0 (5 October 2017): first essentially complete version.
+* 1.1 (6 October 2017): copy-edited and cleaned up.
+* 1.2 (6 October 2017): turn "see also"s into Appendix B.
+
+Contents
+--------
 
 <!-- md2toc -l 2 folio-workflow-engine.md -->
 * [Preface: what this document is](#preface-what-this-document-is)
@@ -44,7 +52,8 @@ Document version 1.0 (5 October 2017).
     * [Tracking jobs](#tracking-jobs)
     * [Some specific issues](#some-specific-issues)
     * [Error handling](#error-handling)
-* [Appendix: using the notification system](#appendix-using-the-notification-system)
+* [Appendix A: Using the notification system](#appendix-a-using-the-notification-system)
+* [Appendix B: Related documents](#appendix-b-related-documents)
 
 
 
@@ -343,7 +352,7 @@ With these analogies in mind, and aware of the three workflow scenarios outlined
 
 Leaving aside the v2 Workflow Editor, which is outside the scope of this document, we expect that most or all of the workflow implementation will be on the back-end. In fact, this is necessary for it to function in automation: we cannot have background tasks stop executing when the user's browser is closed. So while workflows will often be invoked from the front-end, the effects must run mostly on the back-end. (Some workflows will also be started from the back-end: for example, scheduled jobs.)
 
-In some cases, front-end involvement will of course be necessary: for example, when a librarian is required to OK a purchase. Much of the design work in the Workflow system pertains to how this can be done. The most promising approach seems to be using the FOLIO notification system to inform individuals when a task awaits their input. Then we can make it possible for individuals to configure how that system treats various kinds of notifications: see [the Appendix](#appendix-using-the-notification-system) for details.
+In some cases, front-end involvement will of course be necessary: for example, when a librarian is required to OK a purchase. Much of the design work in the Workflow system pertains to how this can be done. The most promising approach seems to be using the FOLIO notification system to inform individuals when a task awaits their input. Then we can make it possible for individuals to configure how that system treats various kinds of notifications: see [the Appendix](#appendix-a-using-the-notification-system) for details.
 
 In other cases, front-end/back-end interaction will be simpler and more transitory. Consider for example a workflow to create a new item record based on a specific instance. The workflow will embody the knowledge of which instance fields to copy across to the new item record, and how to modify those fields, but the result will likely not be the immediate creation of a new item record, but rather transitioning the UI to a "create new item" page with the form already largely filled in. In this scenario, we expect that no new record is persisted within FOLIO until the user hits the Save button.
 
@@ -541,7 +550,7 @@ This would not raise any difficulty if we were merely building an automation sys
 
 * **How do we recognise when the action has been completed?** There are broadly two approaches to this: either the workflow engine can periodically poll the state of all pending actions; or non-workflow objects can have triggers attached to them. For the latter approach, consider job #3456, which requires a librarian to validate purchase order #99. Then we would add a trigger to purchase order #99 saying "when validated, trigger job #3456".
 
-* **How do we notify other members of a class when one of them has done it?** We don't want to have a dozen finance-approved librarians all to go to approve the same purchase order, only for eleven of them to find it's already been done, so we will want to cancel notifications that have been sent. Sending a new "This has been done so you don't need to" notification would be a start; better still would be simply deleting any of the original notificationd that have not been read, so that the other librarians never even need to know that anything happened.
+* **How do we notify other members of a class when one of them has done it?** We don't want to have a dozen finance-approved librarians all to go to approve the same purchase order, only for eleven of them to find it's already been done, so we will want to cancel notifications that have been sent. Sending a new "This has been done so you don't need to" notification would be a start; better still would be simply deleting any of the original notifications that have not been read, so that the other librarians never even need to know that anything happened.
 
 * **What happens if someone other than a member of a nominated class performs the action?** For example, if a purchase is approved by someone from a different department who happens to have the necessary authority, we will want this to trigger the continuation of the workflow just as though one of the nominated people had performed the action -- in fact, we probably don't even want to make a distinction between nominated people and others, except in terms of sending notifications to the former (and cancelling them when appropriate). This is an additional argument for the idea that the state-change itself must trigger the continuation of the workflow, rather than using an approach where the job itself is in control of the sequence of operations.
 
@@ -570,7 +579,7 @@ Much of the detail of this can be, and will need to be, deferred until well afte
 
 
 
-## Appendix: using the notification system
+## Appendix A: Using the notification system
 
 It is clear that workflow will need to use a notification system to inform human users that their input is required, and quite possibly also to inform the workflow engine when such human tasks have been completed. Sample notifications might include:
 
@@ -596,11 +605,14 @@ The notification system itself is a significant piece of work. It may be best to
 
 &nbsp;
 
---
 
-**XXX NOTES TO SELF**:
 
-Consider Charlotte's use-cases: https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637
+## Appendix B: Related documents
 
-Consider Filip's presentation of workflow editor UX: https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041
+The following documented and prototypes are relevant here:
+
+* [Charlotte Whitt's workflow use-cases](https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637)
+* [Filip Jakobsen's presentation of workflow editor UX](https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041)
+* [Another, more rationale-focused, white paper on FOLIO workflow](https://docs.google.com/document/d/1Q_owoSAss2GfiQcMV7E8hd9JJRM11CxIpaYp-YKl9Bc/edit#heading=h.36347oo84qw8)
+* [Ongoing discussion of other workflow systems](https://jira.indexdata.com/browse/INTFOLIO-6)
 
