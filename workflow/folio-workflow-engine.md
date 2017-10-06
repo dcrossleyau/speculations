@@ -2,7 +2,11 @@
 
 Mike Taylor, Index Data `<mike@indexdata.com>`
 
-Document version 1.0 (5 October 2017).
+Document version 1.1 (6 October 2017).
+
+Version history:
+* 1.0 (5 October 2017): first essentially complete verion
+* 1.1 (6 October 2017): copy-edited and cleaned up
 
 <!-- md2toc -l 2 folio-workflow-engine.md -->
 * [Preface: what this document is](#preface-what-this-document-is)
