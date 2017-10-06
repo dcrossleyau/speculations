@@ -52,6 +52,7 @@ Contents
     * [Some specific issues](#some-specific-issues)
     * [Error handling](#error-handling)
 * [Appendix A: Using the notification system](#appendix-a-using-the-notification-system)
+* [Appendix B: Related documents](#appendix-b-related-documents)
 
 
 
@@ -603,13 +604,14 @@ The notification system itself is a significant piece of work. It may be best to
 
 &nbsp;
 
---
 
-**XXX NOTES TO SELF**:
 
-Consider Charlotte's use-cases: https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637
+## Appendix B: Related documents
 
-Consider Filip's presentation of workflow editor UX: https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041
+The following documented and prototypes are relevant here:
 
-Consider another, more rationale-focused, white paper on Workflow in FOLIO: https://docs.google.com/document/d/1Q_owoSAss2GfiQcMV7E8hd9JJRM11CxIpaYp-YKl9Bc/edit#heading=h.36347oo84qw8
+* [Charlotte Whitt's workflow use-cases](https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637)
+* [Filip Jakobsen's presentation of workflow editor UX](https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041)
+* [Another, more rationale-focused, white paper on FOLIO workflow](https://docs.google.com/document/d/1Q_owoSAss2GfiQcMV7E8hd9JJRM11CxIpaYp-YKl9Bc/edit#heading=h.36347oo84qw8)
+* [Ongoing discussion of other workflow systems](https://jira.indexdata.com/browse/INTFOLIO-6)
 
