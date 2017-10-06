@@ -42,6 +42,7 @@ Document version 1.0 (5 October 2017).
         * [Human interaction](#human-interaction)
         * [Other](#other)
     * [Tracking jobs](#tracking-jobs)
+    * [Some specific issues](#some-specific-issues)
     * [Error handling](#error-handling)
 * [Appendix: using the notification system](#appendix-using-the-notification-system)
 
@@ -530,7 +531,7 @@ While workflows are relatively permanent and static (like computer programs), wo
 
 This would not raise any difficulty if we were merely building an automation system: in that case, jobs would be short-lived, and could reside entirely in memory. But the need for human intervention in workflows raises many difficulties. In particular, it requires us to somehow "freeze" the state of a job, potentially for many days, and subsequently resume it in response to a trigger.
 
-Some specific issues:
+### Some specific issues
 
 * **How do we store the state of the in-progress workflow when a human action is required?** We will likely need a back-end module for CRUDding the status of jobs. This status will consist of at least a reference to the workflow that is being run, a pointer into that workflow indicating which step to run next, and some information about what human interventions are awaited. This status will not need to be transmitted outside of the server, so there is no need for a serialised or human-readable form.
 
