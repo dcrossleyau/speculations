@@ -611,3 +611,5 @@ Consider Charlotte's use-cases: https://docs.google.com/spreadsheets/d/1i0WKhIY0
 
 Consider Filip's presentation of workflow editor UX: https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041
 
+Consider another, more rationale-focused, white paper on Workflow in FOLIO: https://docs.google.com/document/d/1Q_owoSAss2GfiQcMV7E8hd9JJRM11CxIpaYp-YKl9Bc/edit#heading=h.36347oo84qw8
+
