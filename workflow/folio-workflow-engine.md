@@ -408,7 +408,7 @@ Four representations of workflows certainly feels like too many. For the moment.
 
 We can certainly do without the compiled form, at least in early versions of the workflow implementation. This is purely an optimisation, to reduce parsing overhead, and can be ignored until and unless profiling shows that it is needed.
 
-But that still leaves us with two forms: XML/JSON and the DSL. In one conception, the latter exists as a human-maintainable form to compiler into the former. But in that case, do we even need the XML/JSON version? Instead, the DSL could itself be the canonical form: workflows will be written by developers, using the DSL; they will be stored in the FOLIO database in that form; then they are compiled and run directly from the parse tree by the Workflow Engine. Later on after v1, these workflows will be compiled and translated into visual form by the Workflow Editor, which will then emit updated workflows in the same DSL, and write them back to the database.
+But that still leaves us with two forms: XML/JSON and the DSL. In one conception, the latter exists as a human-maintainable form to compile into the former. But in that case, do we even need the XML/JSON version? Instead, the DSL could itself be the canonical form: workflows will be written by developers, using the DSL; they will be stored in the FOLIO database in that form; then they are compiled and run directly from the parse tree by the Workflow Engine. Later on after v1, these workflows will be compiled and translated into visual form by the Workflow Editor, which will then emit updated workflows in the same DSL, and write them back to the database.
 
 So it seems possible that we have no pressing need for an XML/JSON form.
 
@@ -497,7 +497,7 @@ And perhaps some domain-specific iterators:
 
 It's not yet clear how these would best be expressed, and whether they would need the schema-aware type system hinted at [above](#data-types).
 
-More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#makefile-like-dependency-tree) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days -- so parallelising is indispensable to avoid long delays.
+More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#scenario-1-acquisition-of-a-requested-book) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days -- so parallelising is indispensable to avoid long delays.
 
 How might such a control-flow be most cleanly expressed? Perhaps something like a `doall` keyword which governs a comma-separated list of statements?
 ```js
@@ -609,7 +609,7 @@ The notification system itself is a significant piece of work. It may be best to
 
 ## Appendix B: Related documents
 
-The following documented and prototypes are relevant here:
+The following documents and prototypes are relevant here:
 
 * [Charlotte Whitt's workflow use-cases](https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637)
 * [Filip Jakobsen's presentation of workflow editor UX](https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041)
