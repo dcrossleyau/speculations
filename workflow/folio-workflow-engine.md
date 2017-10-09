@@ -497,7 +497,7 @@ And perhaps some domain-specific iterators:
 
 It's not yet clear how these would best be expressed, and whether they would need the schema-aware type system hinted at [above](#data-types).
 
-More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#makefile-like-dependency-tree) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days -- so parallelising is indispensable to avoid long delays.
+More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#scenario-1-acquisition-of-a-requested-book) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days -- so parallelising is indispensable to avoid long delays.
 
 How might such a control-flow be most cleanly expressed? Perhaps something like a `doall` keyword which governs a comma-separated list of statements?
 ```js
