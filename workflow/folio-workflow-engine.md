@@ -2,12 +2,13 @@
 
 Mike Taylor, Index Data `<mike@indexdata.com>`
 
-Document version 1.2 (6 October 2017).
+Document version 1.3 (10 October 2017).
 
 Version history:
 * 1.0 (5 October 2017): first essentially complete version.
 * 1.1 (6 October 2017): copy-edited and cleaned up.
 * 1.2 (6 October 2017): turn "see also"s into Appendix B.
+* 1.3 (10 October 2017): add some more links to Appendix B, fix some typos.
 
 Contents
 --------
