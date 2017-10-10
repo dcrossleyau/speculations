@@ -613,6 +613,7 @@ The following documented and prototypes are relevant here:
 
 * [Charlotte Whitt's workflow use-cases](https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637)
 * [Filip Jakobsen's presentation of workflow editor UX](https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041)
+* [Filip Jakobsen's presentation of notification UX](http://ux.folio.org/prototype/en/notifications?view=full)
 * [Another, more rationale-focused, white paper on FOLIO workflow](https://docs.google.com/document/d/1Q_owoSAss2GfiQcMV7E8hd9JJRM11CxIpaYp-YKl9Bc/edit#heading=h.36347oo84qw8)
 * [Ongoing discussion of other workflow systems](https://jira.indexdata.com/browse/INTFOLIO-6)
 
