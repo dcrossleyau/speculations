@@ -2,12 +2,13 @@
 
 Mike Taylor, Index Data `<mike@indexdata.com>`
 
-Document version 1.2 (6 October 2017).
+Document version 1.3 (10 October 2017).
 
 Version history:
 * 1.0 (5 October 2017): first essentially complete version.
 * 1.1 (6 October 2017): copy-edited and cleaned up.
 * 1.2 (6 October 2017): turn "see also"s into Appendix B.
+* 1.3 (10 October 2017): add some more links to Appendix B, fix some typos.
 
 Contents
 --------
@@ -408,7 +409,7 @@ Four representations of workflows certainly feels like too many. For the moment.
 
 We can certainly do without the compiled form, at least in early versions of the workflow implementation. This is purely an optimisation, to reduce parsing overhead, and can be ignored until and unless profiling shows that it is needed.
 
-But that still leaves us with two forms: XML/JSON and the DSL. In one conception, the latter exists as a human-maintainable form to compiler into the former. But in that case, do we even need the XML/JSON version? Instead, the DSL could itself be the canonical form: workflows will be written by developers, using the DSL; they will be stored in the FOLIO database in that form; then they are compiled and run directly from the parse tree by the Workflow Engine. Later on after v1, these workflows will be compiled and translated into visual form by the Workflow Editor, which will then emit updated workflows in the same DSL, and write them back to the database.
+But that still leaves us with two forms: XML/JSON and the DSL. In one conception, the latter exists as a human-maintainable form to compile into the former. But in that case, do we even need the XML/JSON version? Instead, the DSL could itself be the canonical form: workflows will be written by developers, using the DSL; they will be stored in the FOLIO database in that form; then they are compiled and run directly from the parse tree by the Workflow Engine. Later on after v1, these workflows will be compiled and translated into visual form by the Workflow Editor, which will then emit updated workflows in the same DSL, and write them back to the database.
 
 So it seems possible that we have no pressing need for an XML/JSON form.
 
@@ -497,7 +498,7 @@ And perhaps some domain-specific iterators:
 
 It's not yet clear how these would best be expressed, and whether they would need the schema-aware type system hinted at [above](#data-types).
 
-More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#makefile-like-dependency-tree) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days -- so parallelising is indispensable to avoid long delays.
+More importantly, we will need control flow for parallel jobs. Consider the [earlier example](#scenario-1-acquisition-of-a-requested-book) of a request to buy a book, which must be cleared by a librarian and the funds acquired by a purchaser. Since both these tasks require human intervention, they will typically take hours, minutes or even days -- so parallelising is indispensable to avoid long delays.
 
 How might such a control-flow be most cleanly expressed? Perhaps something like a `doall` keyword which governs a comma-separated list of statements?
 ```js
@@ -609,10 +610,12 @@ The notification system itself is a significant piece of work. It may be best to
 
 ## Appendix B: Related documents
 
-The following documented and prototypes are relevant here:
+The following documents and prototypes are relevant here:
 
 * [Charlotte Whitt's workflow use-cases](https://docs.google.com/spreadsheets/d/1i0WKhIY04G38OQJ0KzbiIEUHat_5Wt-3kvFDMlrovK0/edit#gid=1999745637)
 * [Filip Jakobsen's presentation of workflow editor UX](https://discuss.folio.org/t/zap-workflows-ux-iteration-3-english/1041)
+* [Filip Jakobsen's presentation of notification UX](http://ux.folio.org/prototype/en/notifications?view=full)
+* [Filip Jakobsen's "Design Bite" on notifications](https://discuss.folio.org/t/tangerine-design-bite-bell-notifications-in-the-ui/194)
 * [Another, more rationale-focused, white paper on FOLIO workflow](https://docs.google.com/document/d/1Q_owoSAss2GfiQcMV7E8hd9JJRM11CxIpaYp-YKl9Bc/edit#heading=h.36347oo84qw8)
 * [Ongoing discussion of other workflow systems](https://jira.indexdata.com/browse/INTFOLIO-6)
 
